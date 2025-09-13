@@ -12,7 +12,7 @@ const roboto_Condensed = Roboto_Condensed({
 
 const SITE_URL = "https://sportypredict.com";
 const BANNER_URL =
-  "https://raw.githubusercontent.com/DarknessMonarch/sportypredict/refs/heads/master/public/assets/banner.png";
+  "https://raw.githubusercontent.com/Milly-Sporty/sportypredict-frontend/refs/heads/main/public/assets/banner.png";
 
 export const viewport = {
   themeColor: "#ffffff",

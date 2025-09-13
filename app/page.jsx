@@ -62,7 +62,7 @@ export default function Home() {
   const popupBannerAds = adverts.filter((ad) => ad.location === "PopupBanner");
   const hasPopupAds = popupBannerAds.length > 0;
 
-  // Helper function to get current local date string
+
   const getCurrentLocalDateString = useCallback(() => {
     const now = new Date();
     return now.toISOString().split("T")[0];
