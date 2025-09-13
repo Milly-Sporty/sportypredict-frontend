@@ -1,0 +1,84 @@
+@media screen {
+  .advertContainer {
+    width: 100%;
+    position: relative;
+  }
+
+  .bannerContent {
+    gap: 5px;
+    width: 100%;
+    display: flex;
+    padding: 10px;
+    height: fit-content;
+    flex-direction: column;
+    color: var(--primary-color);
+    border-radius: 10px 10px 0 0;
+  }
+
+  .bannerContent h1 {
+    font-weight: 600;
+    font-size: 1.4rem;
+    color: var(--secondary-color);
+  }
+
+  .bannerContent h1 span {
+    color: var(--secondary-color);
+  }
+
+  .advertContainer p {
+    font-size: 1rem;
+    text-align: justify;
+  }
+
+  .btnContainer {
+    gap: 5px;
+    padding: 5px;
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .bannerBtn:nth-child(2) {
+    color: var(--background-color);
+    background-color: var(--telegram-color);
+  }
+
+  .bannerBtn {
+    gap: 10px;
+    padding: 10px;
+    display: flex;
+    cursor: pointer;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    box-shadow: var(--shadow-box);
+  }
+
+  .bannerBtn h1 {
+    font-size: 0.8rem;
+    font-weight: 400;
+    text-transform: capitalize;
+  }
+
+  .bannerBtn:hover {
+    background-color: var(--primary-color);
+  }
+
+  .bannerBtn:hover .bannerIcon {
+    color: var(--background-color);
+  }
+
+  .bannerBtn:hover h1 {
+    color: var(--background-color);
+  }
+
+  .bannerIcon {
+    font-size: 20px;
+  }
+}
+
+/* using it as global style for larger devices  */
+@media only screen and (min-width: 48em) {
+}

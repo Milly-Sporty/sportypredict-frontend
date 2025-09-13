@@ -1,0 +1,240 @@
+@media screen {
+  .card {
+    width: 100%;
+    display: flex;
+    position: relative;
+    border-radius: 4px;
+    flex-direction: column;
+    text-transform: capitalize;
+    box-shadow: var(--line-shadow-box);
+    background-color: var(--background-color);
+  }
+
+  .card:hover {
+    border: none;
+    box-shadow: var(--shadow-background-color);
+  }
+
+  .matchRow {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .matchInfo {
+    flex: 1;
+    gap: 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--light-background-color);
+  }
+
+  .matchInfo span {
+    padding: 10px 5px;
+    width: fit-content;
+    border-radius: 8px;
+    text-transform: capitalize;
+    color: var(--background-color);
+    background-color: var(--secondary-color);
+    box-shadow: var(--shadow-background-color);
+  }
+
+  .leagueSection {
+    gap: 10px;
+    display: flex;
+    padding: 10px;
+    font-size: 0.9rem;
+    align-items: center;
+  }
+
+  .leagueSection h1 {
+    font-size: 0.9rem;
+    font-weight: 300;
+  }
+
+  .leagueIcon {
+    border-radius: 360%;
+  }
+
+  .teamsSection {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .teamContainer {
+    flex: 1;
+    gap: 5px;
+    display: flex;
+    padding: 15px 5px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .teamContainer h2 {
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-transform: capitalize;
+  }
+
+  .timeSection {
+    flex: 0.2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 2px solid var(--light-background-color);
+    border-right: 2px solid var(--light-background-color);
+  }
+
+  .timeSection span {
+    font-size: 0.9rem;
+    font-weight: 300;
+  }
+
+  .betSection {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-top: 2px solid var(--light-background-color);
+    border-bottom: 2px solid var(--light-background-color);
+  }
+
+  .betSectioninner {
+    flex: 1;
+    gap: 5px;
+    display: flex;
+    padding: 0 5px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .betSectioninner h3 {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .oddWithStatus {
+    gap: 10px;
+    display: flex;
+    align-items: top;
+    justify-content: top;
+  }
+
+  .oddWithStatus h3 {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+  }
+
+
+  .statusIcon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    font-size: .9rem;
+    border-radius: 50%;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .oddWithStatus .statusWon {
+    color: var(--background-color);
+    background-color: var(--win-color);
+  }
+  .oddWithStatus .statusLoss {
+    color: var(--background-color);
+    background-color: var(--loose-color);
+  }
+  .oddWithStatus .statusRefund {
+    color: var(--background-color);
+    background-color: var(--draw-color);
+  }
+  .oddWithStatus .statusCancelled {
+    color: var(--background-color);
+    background-color: var(--loose-color);
+  }
+  .oddWithStatus .statusPostponed {
+    color: var(--background-color);
+    background-color: var(--draw-color);
+  }
+
+  .overallStatus {
+    display: flex;
+    align-items: center;
+  }
+
+  .statusLoss .overallStatus {
+    color: var(--loose-color);
+  }
+
+  .statusWon .overallStatus {
+    color: var(--win-color);
+  }
+
+  .statusRefund .overallStatus {
+    color: var(--draw-color);
+  }
+
+  .statusCancelled .overallStatus {
+    color: var(--draw-color);
+  }
+
+  .statusPostponed .overallStatus {
+    color: var(--draw-color);
+  }
+
+  .adBanner {
+    flex: 1;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .advertImage {
+    width: 100%;
+    height: 40px;
+    object-fit: contain;
+  }
+
+  .totalSection {
+    flex: 1;
+    gap: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: var(--primary-color);
+  }
+
+  .totalSectionInner {
+    flex: 1;
+    gap: 5px;
+    display: flex;
+    padding: 10px 5px;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .totalSectionInner span {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .totalSectionInner:first-child {
+    justify-content: flex-end;
+  }
+}
+
+/* using it as global style for larger devices  */
+@media only screen and (min-width: 48em) {
+  .card {
+    width: 550px;
+  }
+}

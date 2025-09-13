@@ -1,0 +1,60 @@
+@media screen {
+  .homeBanner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bannerBtn:nth-child(2) {
+    color: var(--background-color);
+    background-color: var(--telegram-color);
+  }
+
+  .btnContainer {
+    gap: 10px;
+    padding: 5px;
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .bannerBtn {
+    gap: 10px;
+    padding: 10px;
+    display: flex;
+    cursor: pointer;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    box-shadow: var(--shadow-box);
+  }
+
+  .bannerBtn h1 {
+    font-size: 0.8rem;
+    font-weight: 400;
+    text-transform: capitalize;
+  }
+
+  .bannerBtn:hover {
+    background-color: var(--primary-color);
+  }
+
+  .bannerBtn:hover .bannerIcon {
+    color: var(--background-color);
+  }
+
+  .bannerBtn:hover h1 {
+    color: var(--background-color);
+  }
+
+  .bannerIcon {
+    font-size: 20px;
+  }
+}
+
+/* using it as global style for larger devices  */
+@media only screen and (min-width: 48em) {
+}
