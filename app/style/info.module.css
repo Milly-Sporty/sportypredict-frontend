@@ -73,7 +73,6 @@
     font-weight: 500;
     padding-bottom: 5px;
     font-size: var(--font-size-4);
-
   }
 
   .section p {
@@ -85,21 +84,20 @@
     display: flex;
     list-style-type: none;
     flex-direction: column;
-    gap: var(--padding-sm);
-    color:var(---primary-color)
+    color: var(---primary-color);
   }
 
   .bulletList li {
-    padding: var(--padding-sm);
+    padding: var(--padding-sm) 0;
     transition: all 0.3s ease;
+    font-weight: var(--font-weight-regular);
     font-size: var(--font-size-3);
+    text-align: justify;
+    line-height: 1.8;
     color: var(--primary-color);
-    border-left: 1px solid var(--light-secondary-color);
   }
 }
 
 /* using it as global style for larger devices  */
 @media only screen and (min-width: 48em) {
-
-  
 }
