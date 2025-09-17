@@ -86,13 +86,14 @@
     list-style-type: none;
     flex-direction: column;
     gap: var(--padding-sm);
+    color:var(---primary-color)
   }
 
   .bulletList li {
     padding: var(--padding-sm);
     transition: all 0.3s ease;
     font-size: var(--font-size-3);
-    color: var(--lighter-primary-color);
+    color: var(--primary-color);
     border-left: 1px solid var(--light-secondary-color);
   }
 }
