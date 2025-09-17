@@ -38,209 +38,376 @@ export default function PrivacyPolicy() {
       <div className={styles.section}>
         <small>Updated in September 2025</small>
         <p>
-          This Privacy Policy explains how we collect, use, disclose and protect
-          personal data in connection with our services.
+          This Privacy Policy explains how SportyPredict collects, uses,
+          discloses and protects personal information in connection with: (a)
+          the SportyPredict website (sportypredict.com) (&apos;the
+          Website&apos;); and (b) the SportyPredict mobile application available
+          on app stores (&apos;the App&apos;). Together these are referred to as
+          our Services.
         </p>
-      </div>
-
-      <div className={styles.section}>
-        <h2>1. Who Controls Your Data</h2>
         <p>
-          The operators of SportyPredict control the processing of personal data
-          collected via our services. For privacy requests contact{" "}
-          <a href="mailto:contact@sportypredict.com">
-            contact@sportypredict.com
-          </a>
-          .
+          Please read this policy carefully. If you do not agree with this
+          Privacy Policy, please do not use our Services.
         </p>
       </div>
 
       <div className={styles.section}>
-        <h2>2. Data We Collect</h2>
-        <h3>A. Data you provide:</h3>
-        <ul className={styles.bulletList}>
-          <li>Account registration data (name, email, username, password).</li>
-          <li>
-            Contact and billing details (email, billing address, payment tokens)
-            when you subscribe or purchase Paid Features.
-          </li>
-          <li>Communications you send (support requests, feedback).</li>
-        </ul>
-        <h3>B. Automatically collected data:</h3>
+        <h2>1. Quick summary</h2>
         <ul className={styles.bulletList}>
           <li>
-            Device and technical data (device type, operating system, browser,
-            unique device identifiers).
+            <strong>Website:</strong> may collect personal data (email, name,
+            billing details, cookies, analytics) when you register, subscribe,
+            contact us, or otherwise interact with the Website.
           </li>
           <li>
-            Usage data (pages viewed, features used, timestamps).
-          </li>
-          <li>IP address and approximate location derived from IP.</li>
-        </ul>
-      </div>
-
-      <div className={styles.section}>
-        <h2>3. How We Use Your Data (Purposes & Legal Bases)</h2>
-        <ul className={styles.bulletList}>
-          <li>To provide and maintain our services (performance of contract).</li>
-          <li>
-            To process payments and manage subscriptions (performance of
-            contract).
+            <strong>App:</strong> currently does not collect personal data. The
+            App provides content and in-app purchases via the app store; payment
+            processing is handled by the app store (Apple / Google), not by us.
           </li>
           <li>
-            To personalize content and improve the Service (legitimate interest).
-          </li>
-          <li>
-            To send transactional communications such as account notices and
-            billing receipts (performance of contract / legitimate interest).
-          </li>
-          <li>
-            To send marketing communications when you consent (consent). You may
-            opt out at any time.
-          </li>
-          <li>
-            To prevent fraud, abuse and to ensure security (legitimate interest
-            / legal compliance).
-          </li>
-          <li>To comply with legal obligations (legal compliance).</li>
-        </ul>
-      </div>
-
-      <div className={styles.section}>
-        <h2>4. Payments & Billing Data (Premium / VIP)</h2>
-        <ul className={styles.bulletList}>
-          <li>
-            Payments are processed by third-party providers (e.g., Google
-            Playstore, Skrill, Paystack). We may store minimal billing metadata
-            (transaction ID, amount, date, subscription status) and tokenized
-            identifiers. We do not store full card numbers unless explicitly
-            disclosed and secured by certified processors.
-          </li>
-          <li>
-            Transaction records are retained for tax, compliance and
-            fraud-prevention purposes (generally up to 7 years or as required by
-            law). Account metadata is kept while your account is active plus
-            additional period as required.
+            <strong>One privacy policy:</strong> this single document covers
+            both Website and App; sections below explain differences and how to
+            exercise your rights.
           </li>
         </ul>
       </div>
 
       <div className={styles.section}>
-        <h2>5. Sharing & Disclosure of Data</h2>
-        <p>We may share data with:</p>
+        <h2>2. Data we may collect on the Website</h2>
+        <p>
+          When you interact with the Website, we may collect the following
+          categories of personal information:
+        </p>
+
+        <h3>Account and contact information</h3>
         <ul className={styles.bulletList}>
           <li>
-            Service providers (hosting, analytics, payment processors,
-            email/service providers) under contractual terms.
+            Name, email address, username, profile data, and any other
+            information you provide when registering or contacting support.
+          </li>
+        </ul>
+
+        <h3>Billing and subscription data</h3>
+        <ul className={styles.bulletList}>
+          <li>
+            Billing name and email address, tokenized payment reference (if you
+            pay via our web checkout), subscription status and transaction
+            metadata. (If you purchase via the App, the store processes payment
+            and we only receive transaction metadata and subscription
+            confirmation.)
+          </li>
+        </ul>
+
+        <h3>Communications</h3>
+        <ul className={styles.bulletList}>
+          <li>
+            Support requests, feedback, and other communications you send to us.
+          </li>
+        </ul>
+
+        <h3>Technical & usage data</h3>
+        <ul className={styles.bulletList}>
+          <li>
+            Operating system and version, browser type, pages visited,
+            timestamps, session identifiers, referrer, and usage analytics.
+          </li>
+        </ul>
+      </div>
+
+      <div className={styles.section}>
+        <h2>3. Data collected by the App (important)</h2>
+        <ul className={styles.bulletList}>
+          <li>
+            The SportyPredict mobile App currently does not collect, store, or
+            transmit personal data.
           </li>
           <li>
-            Legal & safety — when required by law, regulation or to protect
-            rights, safety or property.
+            The App does not require registration or collect contact details by
+            default.
+          </li>
+          <li>
+            If you make an in-app purchase (Premium/VIP), payment processing is
+            handled by the App Store / Play Store; we do not receive payment
+            card details from the store. We may receive transaction confirmation
+            and subscription identifiers (Transaction ID) from the store so we
+            can enable access to Premium features.
+          </li>
+        </ul>
+        <p>
+          If this behavior changes in future app releases (for example, if
+          account creation is added), we will update this Privacy Policy and
+          notify users where required.
+        </p>
+      </div>
+
+      <div className={styles.section}>
+        <h2>4. How we use personal data (Website)</h2>
+        <p>We use personal data for the following purposes:</p>
+        <ul className={styles.bulletList}>
+          <li>
+            To provide, operate and maintain the Website services and user
+            accounts.
+          </li>
+          <li>
+            To process payments and manage subscriptions (billing, receipts,
+            refunds for web purchases).
+          </li>
+          <li>
+            To send transactional communications (account notices, security
+            alerts).
+          </li>
+          <li>
+            To improve and personalize content and the user experience
+            (analytics and product improvement).
+          </li>
+          <li>To respond to support requests and manage communications.</li>
+          <li>
+            To comply with legal obligations and protect rights and safety
+            (fraud prevention, abuse investigations).
+          </li>
+        </ul>
+        <p>
+          <strong>Legal bases for processing</strong> (where applicable and
+          dependent on your jurisdiction): contract performance (to deliver
+          services), legitimate interests (service improvement, fraud
+          prevention), consent (for marketing communications), and legal
+          compliance.
+        </p>
+      </div>
+
+      <div className={styles.section}>
+        <h2>5. Cookies and tracking on the Website</h2>
+        <p>We use cookies and similar technologies. Categories may include:</p>
+        <ul className={styles.bulletList}>
+          <li>
+            <strong>Essential cookies:</strong> required for site functionality
+            (login, session, security).
+          </li>
+          <li>
+            <strong>Analytics cookies:</strong> to measure site usage, aggregate
+            performance and improve the Website.
+          </li>
+          <li>
+            <strong>Preference cookies:</strong> to remember language or display
+            preferences.
+          </li>
+          <li>
+            <strong>Advertising/measurement</strong> (if applicable): to measure
+            campaign effectiveness.
+          </li>
+        </ul>
+        <p>
+          You can control cookies via your browser settings and any cookie
+          banner / preference center we provide on the Website.
+        </p>
+      </div>
+
+      <div className={styles.section}>
+        <h2>6. Third-party services and processors</h2>
+        <p>
+          We use third-party service providers to run parts of the Website and
+          our operations (hosting, analytics, email delivery, payment
+          processors, customer support, and fraud prevention). These providers
+          process data on our behalf under contractual obligations to protect
+          your data.
+        </p>
+        <p>
+          <strong>Important:</strong> For App purchases, the App Store / Play
+          Store handles payment processing; please consult the store&apos;s
+          privacy resources for details on how they handle your payment
+          information.
+        </p>
+      </div>
+
+      <div className={styles.section}>
+        <h2>7. Data sharing and disclosure</h2>
+        <p>We may disclose personal data:</p>
+        <ul className={styles.bulletList}>
+          <li>
+            To service providers who help operate the Website (hosting,
+            analytics, payment processors).
+          </li>
+          <li>
+            To comply with legal obligations or respond to lawful requests from
+            public authorities.
+          </li>
+          <li>
+            To protect the rights, property or safety of SportyPredict, users or
+            others.
+          </li>
+          <li>
+            In connection with a corporate transaction (sale, merger,
+            reorganization) — with notice and protections as required by law.
           </li>
         </ul>
         <p>We do not sell personal data.</p>
       </div>
 
       <div className={styles.section}>
-        <h2>6. International Transfers</h2>
+        <h2>8. International transfers</h2>
         <p>
-          Data may be processed outside your country of residence. Where
-          transfers occur we apply appropriate safeguards (e.g., contractual
-          clauses) to protect personal data.
+          Data collected via the Website may be processed in jurisdictions
+          outside your country (for example, in the country where our service
+          providers operate). Where data is transferred internationally, we use
+          appropriate safeguards (contractual clauses, security measures) to
+          protect personal data.
         </p>
       </div>
 
       <div className={styles.section}>
-        <h2>7. Data Retention & Deletion Requests</h2>
+        <h2>9. Data retention</h2>
+        <p>
+          We retain personal data for as long as necessary to provide services,
+          comply with legal obligations, resolve disputes, enforce our
+          agreements, and for legitimate business purposes. Typical retention
+          periods:
+        </p>
         <ul className={styles.bulletList}>
           <li>
-            Personal data is retained as long as necessary to deliver the
-            Service, for legal compliance, fraud prevention and dispute
-            resolution.
+            <strong>Account data:</strong> while account is active + 2 years (or
+            as required).
           </li>
           <li>
-            To request access, correction, restriction, deletion or portability
-            of your personal data, contact{" "}
-            <a href="mailto:contact@sportypredict.com">
-              contact@sportypredict.com
-            </a>
-            . We will respond within 30 days or as required by law.
+            <strong>Transaction records:</strong> up to 7 years for tax and
+            accounting compliance.
+          </li>
+          <li>
+            <strong>Analytics and logs:</strong> aggregated/anonymized
+            indefinitely; raw logs retained for a limited period for security
+            and troubleshooting.
+          </li>
+        </ul>
+        <p>
+          If you request deletion, we will remove your personal data unless
+          retention is needed for legal compliance or to complete a transaction.
+        </p>
+      </div>
+
+      <div className={styles.section}>
+        <h2>10. Your rights and choices</h2>
+        <p>Depending on your jurisdiction, you may have rights including:</p>
+        <ul className={styles.bulletList}>
+          <li>
+            <strong>Access:</strong> request a copy of personal data held about
+            you.
+          </li>
+          <li>
+            <strong>Correction:</strong> request correction of inaccurate or
+            incomplete data.
+          </li>
+          <li>
+            <strong>Deletion:</strong> request deletion of personal data (right
+            to be forgotten), subject to legal retention needs.
+          </li>
+          <li>
+            <strong>Restriction or objection:</strong> restrict or object to
+            certain processing (e.g., direct marketing).
+          </li>
+          <li>
+            <strong>Portability:</strong> request export of personal data in a
+            common, machine-readable format.
+          </li>
+          <li>
+            <strong>Withdraw consent:</strong> where processing is based on
+            consent (e.g., marketing cookies), you may withdraw consent at any
+            time.
+          </li>
+        </ul>
+        <p>
+          To exercise these rights, contact us at the address below. We will
+          respond in accordance with applicable law and within a reasonable time
+          (typically within 30 days where required).
+        </p>
+      </div>
+
+      <div className={styles.section}>
+        <h2>11. How to make a data request or complaint</h2>
+        <p>
+          For access, correction, deletion, complaints or other privacy
+          inquiries, contact:
+        </p>
+        <p>
+          <strong>Email:</strong>{" "}
+          <a href="mailto:contact@sportypredict.com">
+            contact@sportypredict.com
+          </a>
+          <br />
+          <strong>Postal (optional):</strong> [Postal Address if any]
+        </p>
+        <p>
+          If you are in Kenya or another jurisdiction with a data protection
+          authority, you may also lodge a complaint with the relevant authority
+          after contacting us.
+        </p>
+      </div>
+
+      <div className={styles.section}>
+        <h2>12. Security</h2>
+        <p>
+          We take reasonable technical and organizational measures to protect
+          personal data against unauthorized access, loss or misuse (encryption,
+          access controls, secure hosting). However, no method of transmission
+          or storage is 100% secure. If a data breach occurs that risks user
+          rights, we will notify affected users and authorities as required by
+          law.
+        </p>
+      </div>
+
+      <div className={styles.section}>
+        <h2>13. Children&apos;s privacy</h2>
+        <p>
+          Our Services are not directed to children under 18. We do not
+          knowingly collect personal data from minors. If we learn that we have
+          collected personal data from someone under 18 without parental
+          consent, we will delete it promptly.
+        </p>
+      </div>
+
+      <div className={styles.section}>
+        <h2>14. Links to other sites</h2>
+        <p>
+          The Website or App may contain links to third-party websites or
+          services. This Privacy Policy does not apply to those sites. We are
+          not responsible for third-party privacy practices; please review their
+          privacy notices before providing personal data.
+        </p>
+      </div>
+
+      <div className={styles.section}>
+        <h2>15. Changes to this Privacy Policy</h2>
+        <p>
+          We may update this Privacy Policy from time to time. Material changes
+          will be posted on the Website with a revised Effective Date. If
+          required by law or where we decide to be transparent, we will notify
+          users of significant changes by email or in-app/website notices.
+        </p>
+      </div>
+
+      <div className={styles.section}>
+        <h2>16. Additional app store notes</h2>
+        <ul className={styles.bulletList}>
+          <li>
+            The App currently does not collect personal data; the App Store /
+            Play Store processes any in-app purchase payments.
+          </li>
+          <li>
+            For refunds or billing questions related to in-app purchases, please
+            follow the App Store / Google Play procedures. We can assist with
+            verification when necessary.
           </li>
         </ul>
       </div>
 
       <div className={styles.section}>
-        <h2>8. Your Rights</h2>
+        <h2>17. Contact</h2>
         <p>
-          Subject to local law, you may have rights to: access, delete, restrict
-          or object to processing, and data portability. To exercise rights
-          contact{" "}
-          <a href="mailto:contact@sportypredict.com">contact@sportypredict.com</a>.
-          You may also lodge a complaint with your local data protection
-          authority.
+          If you have questions about this Privacy Policy or privacy practices:
         </p>
-      </div>
-
-      <div className={styles.section}>
-        <h2>9. Security Measures</h2>
         <p>
-          We implement reasonable technical and organizational measures (secure
-          hosting, encryption, access controls). However, no system is perfectly
-          secure and we cannot guarantee absolute security.
-        </p>
-      </div>
-
-      <div className={styles.section}>
-        <h2>10. Children’s Privacy</h2>
-        <p>
-          Our services are directed to children under 18. We do not knowingly
-          collect data from minors. If such data is discovered, we will delete
-          it promptly.
-        </p>
-      </div>
-
-      <div className={styles.section}>
-        <h2>11. Cookies & Tracking</h2>
-        <ul className={styles.bulletList}>
-          <li>Essential cookies: required for core functionality.</li>
-          <li>
-            Analytics cookies: help us measure and improve the Service (e.g.,
-            Google Analytics).
-          </li>
-          <li>
-            Advertising/affiliate cookies: used to serve and measure campaigns.
-          </li>
-        </ul>
-        <p>
-          You can manage cookie preferences via your browser or our cookie
-          controls.
-        </p>
-      </div>
-
-      <div className={styles.section}>
-        <h2>12. Marketing Communications & Opt-Out</h2>
-        <p>
-          We may send promotional email if you consent. You may opt out at any
-          time via the unsubscribe link or by contacting{" "}
-          <a href="mailto:contact@sportypredict.com">contact@sportypredict.com</a>
-          .
-        </p>
-      </div>
-
-      <div className={styles.section}>
-        <h2>13. Changes to this Privacy Policy</h2>
-        <p>
-          We may update the Privacy Policy periodically. Material changes will
-          be posted with an updated effective date and, where required, notified
-          to users.
-        </p>
-      </div>
-
-      <div className={styles.section}>
-        <h2>14. Contact for Privacy Requests</h2>
-        <p>
-          Email:{" "}
-          <a href="mailto:contact@sportypredict.com">contact@sportypredict.com</a>
+          <strong>Email:</strong>{" "}
+          <a href="mailto:contact@sportypredict.com">
+            contact@sportypredict.com
+          </a>
         </p>
       </div>
     </div>
