@@ -47,7 +47,7 @@ export default function RefundPolicy() {
         <h2>1. Scope</h2>
         <p>
           This policy applies to all paid digital products offered through
-          SportPredict, including recurring subscriptions (Premium / VIP),
+          SportyPredict, including recurring subscriptions (Premium / VIP),
           one-off purchases (reports, packs, special content). It explains
           eligibility for refunds, how to request them, and how refunds are
           processed.
