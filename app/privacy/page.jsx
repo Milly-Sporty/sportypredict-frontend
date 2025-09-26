@@ -56,7 +56,7 @@ export default function PrivacyPolicy() {
         <ul className={styles.bulletList}>
           <li>
             <strong>Website:</strong> may collect personal data (email, name,
-            billing details, cookies, analytics) when you register, subscribe,
+            counry) when you register, subscribe,
             contact us, or otherwise interact with the Website.
           </li>
           <li>
