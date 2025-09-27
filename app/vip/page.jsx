@@ -16,7 +16,6 @@ import { useEffect, useState, useMemo, useCallback } from "react";
 import { FaRegUser as UserIcon } from "react-icons/fa";
 
 const vipSlipOptions = [
-  "All VIP Slips",
   "Banker Slip",
   "Tennis Slip",
   "Basketball Slip",
@@ -25,7 +24,6 @@ const vipSlipOptions = [
 ];
 
 const vipSlipMapping = {
-  "All VIP Slips": "",
   "Banker Slip": "banker",
   "Tennis Slip": "tennis",
   "Basketball Slip": "basketball",
