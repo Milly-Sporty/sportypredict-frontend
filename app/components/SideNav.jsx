@@ -445,7 +445,7 @@ export default function SideNavComponent() {
                     onClick={handleLinkClick}
                   >
                     <NewsIcon className={styles.sideNavIcon} alt="news icon" />
-                    <h1>Sport News</h1>
+                    <h1>Sports News</h1>
                   </Link>
                   <Link
                     href="/blog"
@@ -455,7 +455,7 @@ export default function SideNavComponent() {
                     onClick={handleLinkClick}
                   >
                     <BlogIcon className={styles.sideNavIcon} alt="blog icon" />
-                    <h1>Sport Blog</h1>
+                    <h1>Sports Blog</h1>
                   </Link>
                   <Link
                     href="/offers"
@@ -465,7 +465,7 @@ export default function SideNavComponent() {
                     onClick={handleLinkClick}
                   >
                     <OffersIcon className={styles.sideNavIcon} alt="offers icon" />
-                    <h1>Sport offers</h1>
+                    <h1>Sports offers</h1>
                   </Link>
                   <Link
                     href="/about"

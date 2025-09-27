@@ -324,7 +324,7 @@ export default function Home() {
           By combining in-depth analysis, a seamless user experience, and an
           unwavering commitment to free access, we&apos;ve crafted the ultimate
           destination for free sports predictions. Join thousands of satisfied
-          users and let SportyPredict power your next winning bet.
+          users and let SportyPredict be your sports prediction and analysis powerhouse
         </p>
       </div>
     );
