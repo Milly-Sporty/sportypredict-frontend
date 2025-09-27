@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import styles from "@/app/style/info.module.css";
 
-export default function Policy() {
+export default function Disclaimer() {
   useEffect(() => {
     const sections = document.querySelectorAll(`.${styles.section}`);
 
