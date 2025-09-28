@@ -199,7 +199,9 @@ export default function Vip() {
   const [searchKey, setSearchKey] = useState("");
   const [leagueKey, setLeagueKey] = useState("");
   const [countryKey, setCountryKey] = useState("");
-  const [vipSlipFilter, setVipSlipFilter] = useState("");
+  const [vipSlipFilter, setVipSlipFilter] = useState(
+    vipSlipMapping["Banker Slip"]
+  );
 
   const currentCategory = decodeURIComponent(pathname.split("/").pop());
 
@@ -257,16 +259,13 @@ export default function Vip() {
     }
   }, [isAuth, isVipActive, isInitialized, forceVipStatusRefresh]);
 
-  useEffect(() => {
-    const urlSearch = searchParams.get("search");
-    const urlVipSlip = searchParams.get("vipSlip");
-
-    setSearchKey(urlSearch || "");
-
-    if ((urlVipSlip || "") !== vipSlipFilter) {
-      setVipSlipFilter(urlVipSlip || "");
-    }
-  }, [searchParams, vipSlipFilter]);
+useEffect(() => {
+  const urlVipSlip = searchParams.get("vipSlip");
+  if (!urlVipSlip) {
+    handleVipSlipFilterChange(vipSlipMapping["Banker Slip"]);
+  }
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
   useEffect(() => {
     const loadPredictions = async () => {
