@@ -9,17 +9,24 @@ import { useAuthStore } from "@/app/store/Auth";
 import LogoImg from "@/public/assets/fullogo.png";
 import styles from "@/app/style/navbar.module.css";
 import { useDrawerStore } from "@/app/store/Drawer";
+import { useAppBannerStore } from "@/app/store/AppBanner";
 import { usePathname, useRouter } from "next/navigation";
+import { FaDownload as DownloadIcon } from "react-icons/fa";
 import { RiMenu5Fill as MenuIcon } from "react-icons/ri";
 import { FaRegUser as UserIcon } from "react-icons/fa";
 import { MdLogout as LogoutIcon } from "react-icons/md";
+import { IoClose as CloseIcon } from "react-icons/io5";
+import { FaApple, FaGooglePlay } from "react-icons/fa";
 import { useEffect, useState, useCallback, useRef } from "react";
 
 export default function NavbarComponent() {
   const { toggleOpen, setOpen, setClose } = useDrawerStore();
+  const { showBanner, deviceOS, initializeBanner, dismissBanner, getAppLink } =
+    useAppBannerStore();
   const [isMobile, setMobile] = useState(false);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const fileInputRef = useRef(null);
   const router = useRouter();
   const pathname = usePathname();
@@ -34,6 +41,27 @@ export default function NavbarComponent() {
     clearUser,
     updateProfileImage,
   } = useAuthStore();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (isClient) {
+      initializeBanner();
+    }
+  }, [isClient, initializeBanner]);
+
+  const handleBannerClose = () => {
+    dismissBanner();
+  };
+
+  const handleAppDownload = () => {
+    const appLink = getAppLink();
+    if (appLink) {
+      window.open(appLink, "_blank");
+    }
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -66,14 +94,12 @@ export default function NavbarComponent() {
 
       if (result.success) {
         toast.success(result.message || "Logged out successfully");
-
         router.push("/", { scroll: false });
       } else {
         toast.error(result.message || "Logout failed");
       }
     } catch (error) {
       toast.error("An error occurred during logout");
-
       clearUser();
       router.push("/", { scroll: false });
     } finally {
@@ -107,7 +133,7 @@ export default function NavbarComponent() {
         return;
       }
 
-      const maxSize = 100 * 1024 * 1024; // 100MB
+      const maxSize = 100 * 1024 * 1024;
       if (file.size > maxSize) {
         toast.error("Image size must be less than 100MB");
         return;
@@ -201,6 +227,33 @@ export default function NavbarComponent() {
         style={{ display: "none" }}
         disabled={isUploadingImage}
       />
+
+      {isClient && showBanner && deviceOS && (
+        <div className={styles.appBanner}>
+          <button
+            className={styles.bannerClose}
+            onClick={handleBannerClose}
+            aria-label="Close banner"
+          >
+            <CloseIcon />
+          </button>
+          <div className={styles.bannerContent}>
+            <div className={styles.bannerContentInner}>
+              <div className={styles.bannerIcon}>
+                {deviceOS === "ios" ? <FaApple /> : <FaGooglePlay />}
+              </div>
+              <div className={styles.bannerText}>
+                <h4>Get the SportyPredict App</h4>
+                <p>Download now for a better experience</p>
+              </div>
+            </div>
+
+            <button className={styles.bannerButton} onClick={handleAppDownload}>
+              <DownloadIcon /> {isMobile ? "" : "Download"} 
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className={styles.navContainer}>
         <div className={styles.navContainerInner}>

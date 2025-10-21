@@ -123,7 +123,7 @@ export default function Footer() {
               >
                 <FaFacebookF />
               </button>
-                <button
+              <button
                 className={`${styles.socialButton} ${styles.whatsapp}`}
                 onClick={() =>
                   openSocialMedia(
@@ -177,23 +177,34 @@ export default function Footer() {
               >
                 <FaTiktok />
               </button>
-            
             </div>
             <div className={styles.appButtons}>
-              <div className={styles.appButton}>
+              <button
+                className={styles.appButton}
+                onClick={() =>
+                  openSocialMedia("https://apps.apple.com/app/id6752551522")
+                }
+              >
                 <FaApple className={styles.appIcon} />
                 <div className={styles.appText}>
-                  <span className={styles.appPlatform}>App Store</span>
-                  <span className={styles.comingSoon}>Coming Soon</span>
+                  <span className={styles.appPlatform}>Download Now</span>
+                  <span className={styles.comingSoon}>Available</span>
                 </div>
-              </div>
-              <div className={styles.appButton}>
+              </button>
+              <button
+                className={styles.appButton}
+                onClick={() =>
+                  openSocialMedia(
+                    "https://play.google.com/store/apps/details?id=com.sportypredict.sportypredict"
+                  )
+                }
+              >
                 <FaGooglePlay className={styles.appIcon} />
                 <div className={styles.appText}>
-                  <span className={styles.appPlatform}>Google Play</span>
-                  <span className={styles.comingSoon}>Coming Soon</span>
+                  <span className={styles.appPlatform}>Download Now</span>
+                  <span className={styles.comingSoon}>Available</span>
                 </div>
-              </div>
+              </button>
             </div>
           </div>
         </div>
