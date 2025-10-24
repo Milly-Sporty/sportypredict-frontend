@@ -16,20 +16,22 @@ export const useAppBannerStore = create(
           const userAgent = window.navigator.userAgent.toLowerCase();
           const isIOS = /iphone|ipad|ipod/.test(userAgent);
           const isAndroid = /android/.test(userAgent);
-          const isMac = /mac/.test(userAgent);
-          const isWindows = /win/.test(userAgent);
 
           if (isIOS) return "ios";
           if (isAndroid) return "android";
-          if (isMac) return "mac";
-          if (isWindows) return "windows";
-          return "other"; // Changed from null to "other"
+          return null; // Not a mobile device
         };
 
         const os = detectOS();
         const { dismissedAt, isInitialized } = get();
 
         if (isInitialized) return;
+
+        // Only show banner for mobile devices (iOS or Android)
+        if (!os) {
+          set({ showBanner: false, deviceOS: null, isInitialized: true });
+          return;
+        }
 
         if (dismissedAt) {
           const currentTime = Date.now();

@@ -52,7 +52,8 @@ export default function NavbarComponent() {
     }
   }, [isClient, initializeBanner]);
 
-  const handleBannerClose = () => {
+  const handleBannerClose = (e) => {
+    e.stopPropagation();
     dismissBanner();
   };
 
@@ -228,8 +229,8 @@ export default function NavbarComponent() {
         disabled={isUploadingImage}
       />
 
-      {isClient && showBanner && deviceOS && (
-        <div className={styles.appBanner}>
+      {isClient && showBanner && deviceOS && (deviceOS === "ios" || deviceOS === "android") && (
+        <div className={styles.appBanner} onClick={handleAppDownload} style={{ cursor: "pointer" }}>
           <button
             className={styles.bannerClose}
             onClick={handleBannerClose}
@@ -248,9 +249,9 @@ export default function NavbarComponent() {
               </div>
             </div>
 
-            <button className={styles.bannerButton} onClick={handleAppDownload}>
-              <DownloadIcon /> {isMobile ? "" : "Download"} 
-            </button>
+            <div className={styles.bannerButton}>
+              <DownloadIcon />
+            </div>
           </div>
         </div>
       )}
