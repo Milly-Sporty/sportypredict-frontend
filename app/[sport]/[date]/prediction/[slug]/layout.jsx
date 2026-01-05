@@ -235,6 +235,37 @@ export default async function MatchLayout({ children, params }) {
       }
     ]
   };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: `Who will win ${teamA} vs ${teamB}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `Based on our expert analysis, get detailed predictions for ${teamA} vs ${teamB} including betting tips, odds comparison, and match preview.`
+        }
+      },
+      {
+        "@type": "Question",
+        name: `What are the best betting tips for ${teamA} vs ${teamB}?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `Our ${currentSport} experts provide comprehensive betting tips for ${teamA} vs ${teamB}, including value bets, correct score predictions, and over/under analysis.`
+        }
+      },
+      {
+        "@type": "Question",
+        name: `When is ${teamA} vs ${teamB} match?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `The ${teamA} vs ${teamB} match is scheduled for ${date}. Check our detailed match preview for kick-off time and venue information.`
+        }
+      }
+    ]
+  };
   
   return (
     <>
@@ -254,6 +285,12 @@ export default async function MatchLayout({ children, params }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(breadcrumbSchema)
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema)
         }}
       />
       {children}

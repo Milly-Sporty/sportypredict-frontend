@@ -21,6 +21,12 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+          {
+        protocol: 'https',
+        hostname: ' minio.swiftsyn.com',
+        port: '',
+        pathname: '/**',
+      },
        {
         protocol: "https",
         hostname: "minio.sportypredict.com",

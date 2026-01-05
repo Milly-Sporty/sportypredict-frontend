@@ -63,27 +63,27 @@ async function getMatchUrls() {
     const matchUrls = predictions.map(prediction => {
       const teamA = prediction.teamA || prediction.homeTeam || prediction.cleanTeamA;
       const teamB = prediction.teamB || prediction.awayTeam || prediction.cleanTeamB;
-      
+
       const slug = prediction.slug || createMatchSlug(teamA, teamB);
-      
+
       const getSportPath = (sport, category) => {
         if (category === 'bet-of-the-day') return 'bet-of-the-day';
         if (category === 'vip') return 'vip';
-        
+
         const sportMap = {
           'football': 'football',
-          'basketball': 'basketball', 
+          'basketball': 'basketball',
           'tennis': 'tennis',
           'soccer': 'football'
         };
-        
+
         return sportMap[sport?.toLowerCase()] || sportMap[category?.toLowerCase()] || 'football';
       };
-      
+
       const sportPath = getSportPath(prediction.sport, prediction.category);
-      
+
       const url = `https://sportypredict.com/${sportPath}/${prediction.date}/prediction/${slug}`;
-      
+
       let lastModified;
       if (prediction.time) {
         lastModified = getLocalDate(prediction.time);
@@ -92,17 +92,44 @@ async function getMatchUrls() {
       } else {
         lastModified = getLocalDate(prediction.updatedAt || prediction.createdAt || new Date());
       }
-      
+
       const today = new Date();
       if (lastModified < today && prediction.date && getLocalDate(prediction.date) >= today) {
         lastModified = today;
       }
-      
+
+      // Calculate dynamic priority based on match timing
+      const matchDate = getLocalDate(prediction.date || prediction.time);
+      const daysUntilMatch = Math.ceil((matchDate - today) / (1000 * 60 * 60 * 24));
+
+      let priority = 0.7; // default
+      let changeFrequency = 'daily';
+
+      if (prediction.category === 'bet-of-the-day') {
+        priority = 0.9;
+        changeFrequency = 'hourly';
+      } else if (daysUntilMatch <= 0) {
+        priority = 0.95; // Match day - highest priority
+        changeFrequency = 'hourly';
+      } else if (daysUntilMatch === 1) {
+        priority = 0.85; // Tomorrow
+        changeFrequency = 'hourly';
+      } else if (daysUntilMatch <= 3) {
+        priority = 0.8; // Next 3 days
+        changeFrequency = 'daily';
+      } else if (daysUntilMatch <= 7) {
+        priority = 0.75; // This week
+        changeFrequency = 'daily';
+      } else {
+        priority = 0.7; // Future matches
+        changeFrequency = 'weekly';
+      }
+
       return {
         url,
         lastModified,
-        changeFrequency: 'daily',
-        priority: 0.7,
+        changeFrequency,
+        priority,
       };
     });
     

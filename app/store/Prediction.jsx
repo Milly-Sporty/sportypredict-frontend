@@ -141,7 +141,7 @@ export const usePredictionStore = create(
           }
       
           const data = await response.json();
-      
+
           if (data.status === "success" && data.data) {
             set({ singlePrediction: data.data });
             return { success: true, data: data.data };
