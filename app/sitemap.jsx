@@ -1,5 +1,9 @@
 import { createMatchSlug } from '@/app/utility/UrlSlug';
 
+// Force sitemap to be dynamic and revalidate frequently
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // Revalidate every hour
+
 function getCurrentLocalDate() {
   const now = new Date();
   const formatter = new Intl.DateTimeFormat('en-CA', {
@@ -26,16 +30,18 @@ function getLocalDate(dateInput) {
 
 async function getMatchUrls() {
   try {
-    const baseUrl = process.env.NODE_ENV === 'development' 
-      ? 'http://localhost:3000' 
+    const baseUrl = process.env.NODE_ENV === 'development'
+      ? 'http://localhost:3000'
       : (process.env.NEXT_PUBLIC_API_URL || 'https://sportypredict.com');
-    
+
     const timestamp = Date.now();
     const apiUrl = `${baseUrl}/api/predictions/sitemap?t=${timestamp}`;
-    
+
+    console.log('[Sitemap] Fetching predictions from:', apiUrl);
+
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 60000);
-    
+    const timeoutId = setTimeout(() => controller.abort(), 120000); // Increased to 2 minutes
+
     const response = await fetch(apiUrl, {
       cache: 'no-store',
       headers: {
@@ -46,17 +52,21 @@ async function getMatchUrls() {
       },
       signal: controller.signal
     });
-    
+
     clearTimeout(timeoutId);
-    
+
     if (!response.ok) {
+      console.error('[Sitemap] API response not OK:', response.status);
       return [];
     }
-    
+
     const data = await response.json();
     const predictions = data.predictions || [];
-    
+
+    console.log('[Sitemap] Fetched predictions count:', predictions.length);
+
     if (predictions.length === 0) {
+      console.warn('[Sitemap] No predictions returned from API');
       return [];
     }
     
