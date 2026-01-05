@@ -297,13 +297,18 @@ async function getSportDateUrls() {
   try {
     const sportDateUrls = [];
     const sports = ['football', 'basketball', 'tennis', 'bet-of-the-day'];
-    const currentDate = new Date();
-    
+
+    // ALWAYS use current server time, not cached
+    const now = new Date();
+    const currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+    console.log('[Sitemap] Generating sport/date URLs from:', currentDate.toISOString());
+
     for (let i = 0; i < 30; i++) {
       const date = new Date(currentDate);
       date.setDate(date.getDate() + i);
       const dateStr = getDateString(date);
-      
+
       sports.forEach(sport => {
         sportDateUrls.push({
           url: `https://sportypredict.com/${sport}/${dateStr}`,
@@ -313,17 +318,24 @@ async function getSportDateUrls() {
         });
       });
     }
-    
+
+    console.log('[Sitemap] Generated', sportDateUrls.length, 'sport/date URLs');
     return sportDateUrls;
-    
+
   } catch (error) {
+    console.error('[Sitemap] Error generating sport/date URLs:', error);
     return [];
   }
 }
 
 export default async function sitemap() {
   const baseUrl = "https://sportypredict.com";
-  const currentDate = new Date();
+
+  // Force fresh timestamp on every request
+  const now = new Date();
+  const currentDate = new Date(now.getTime());
+
+  console.log('[Sitemap] Generating sitemap at:', currentDate.toISOString());
 
   const mainRoutes = [
     {

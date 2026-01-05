@@ -192,9 +192,8 @@ export default function Sport() {
     }
 
     const matchSlug = createMatchSlug(teamA, teamB);
-    const encodedSlug = encodeURIComponent(matchSlug);
 
-    const fullUrl = `/${currentSport}/${selectedDate}/prediction/${encodedSlug}`;
+    const fullUrl = `/${currentSport}/${selectedDate}/prediction/${matchSlug}`;
     router.push(fullUrl, { scroll: false });
   };
 
