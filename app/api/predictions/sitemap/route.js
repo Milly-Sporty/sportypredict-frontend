@@ -101,14 +101,20 @@ export async function GET() {
                 
                 const sportPath = getSportPath(prediction.sport, prediction.category);
                 
-                let updatedAt = prediction.time || prediction.updatedAt || prediction.createdAt || new Date().toISOString();
-                if (typeof updatedAt === 'string') {
-                  updatedAt = new Date(updatedAt).toISOString();
+                let updatedAt = prediction.time || prediction.updatedAt || prediction.createdAt;
+                if (updatedAt && typeof updatedAt === 'string') {
+                  const parsedDate = new Date(updatedAt);
+                  updatedAt = !isNaN(parsedDate.getTime()) ? parsedDate.toISOString() : new Date().toISOString();
+                } else if (!updatedAt) {
+                  updatedAt = new Date().toISOString();
                 }
-                
-                let createdAt = prediction.createdAt || new Date().toISOString();
-                if (typeof createdAt === 'string') {
-                  createdAt = new Date(createdAt).toISOString();
+
+                let createdAt = prediction.createdAt;
+                if (createdAt && typeof createdAt === 'string') {
+                  const parsedDate = new Date(createdAt);
+                  createdAt = !isNaN(parsedDate.getTime()) ? parsedDate.toISOString() : new Date().toISOString();
+                } else if (!createdAt) {
+                  createdAt = new Date().toISOString();
                 }
                 
                 return {
@@ -120,7 +126,10 @@ export async function GET() {
                   sport: prediction.sport,
                   sportPath,
                   tip: prediction.tip,
-                  time: prediction.time ? new Date(prediction.time).toISOString() : null,
+                  time: prediction.time ? (() => {
+                    const timeDate = new Date(prediction.time);
+                    return !isNaN(timeDate.getTime()) ? timeDate.toISOString() : null;
+                  })() : null,
                   odd: prediction.odd,
                   stake: prediction.stake, 
                   vipSlip: prediction.vipSlip, 
