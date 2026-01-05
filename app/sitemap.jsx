@@ -2,7 +2,7 @@ import { createMatchSlug } from '@/app/utility/UrlSlug';
 
 // Force sitemap to be dynamic and revalidate frequently
 export const dynamic = 'force-dynamic';
-export const revalidate = 3600; // Revalidate every hour
+export const revalidate = 0; // Disable static generation
 
 function getCurrentLocalDate() {
   const now = new Date();
