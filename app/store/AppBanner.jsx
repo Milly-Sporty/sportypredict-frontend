@@ -27,7 +27,6 @@ export const useAppBannerStore = create(
 
         if (isInitialized) return;
 
-        // Only show banner for mobile devices (iOS or Android)
         if (!os) {
           set({ showBanner: false, deviceOS: null, isInitialized: true });
           return;
@@ -56,10 +55,7 @@ export const useAppBannerStore = create(
         if (deviceOS === "ios") {
           return "https://apps.apple.com/app/id6752551522";
         }
-        if (deviceOS === "android") {
-          return "https://play.google.com/store/apps/details?id=com.sportypredict.sportypredict";
-        }
-        return "https://play.google.com/store/apps/details?id=com.sportypredict.sportypredict";
+        return "https://apps.apple.com/app/id6752551522";
       },
 
       resetBanner: () => {
