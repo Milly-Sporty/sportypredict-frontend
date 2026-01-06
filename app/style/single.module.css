@@ -17,6 +17,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
   }
 
   .singleSportWrapper {
@@ -244,8 +245,6 @@
     color: var(--primary-color);
   }
 
- 
-
   .activeTeam {
     background-color: var(--background-color) !important;
     box-shadow: var(--nav-shadow-box);
@@ -397,10 +396,6 @@
 
 /* Media Query for larger devices */
 @media only screen and (min-width: 48em) {
-  .singleSportContainer {
-    flex-direction: row;
-  }
-
   .singleSportWrapper {
     flex: 80%;
     height: 100vh;
@@ -409,9 +404,12 @@
     overflow-y: auto;
   }
 
-  .tabContent {
-    height: 100%;
+  .innerSingleSportContainer {
+    display: flex;
+    flex-direction: row;
   }
+
+
 
   .sideContent {
     flex: 20%;

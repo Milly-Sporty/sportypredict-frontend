@@ -279,6 +279,7 @@ export default function NavbarComponent() {
           <div className={styles.navlinksContainer}>
             <Link
               href="/news"
+              title="Latest sports news and updates"
               className={`${styles.navlinks} ${
                 pathname === "/news" ? styles.activeNavLinks : ""
               }`}
@@ -287,6 +288,7 @@ export default function NavbarComponent() {
             </Link>
             <Link
               href="/blog"
+              title="Sports betting tips, analysis, and expert insights"
               className={`${styles.navlinks} ${
                 pathname === "/blog" ? styles.activeNavLinks : ""
               }`}
@@ -295,6 +297,7 @@ export default function NavbarComponent() {
             </Link>
             <Link
               href="/offers"
+              title="Exclusive betting offers and promotions"
               className={`${styles.navlinks} ${
                 pathname === "/offers" ? styles.activeNavLinks : ""
               }`}
@@ -303,6 +306,7 @@ export default function NavbarComponent() {
             </Link>
             <Link
               href="/about"
+              title="Learn more about SportyPredict"
               className={`${styles.navlinks} ${
                 pathname === "/about" ? styles.activeNavLinks : ""
               }`}
@@ -311,6 +315,7 @@ export default function NavbarComponent() {
             </Link>
             <Link
               href="/contact"
+              title="Get in touch with SportyPredict"
               className={`${styles.navlinks} ${
                 pathname === "/contact" ? styles.activeNavLinks : ""
               }`}

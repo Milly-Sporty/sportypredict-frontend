@@ -1,0 +1,40 @@
+# robots.txt for SportyPredict
+# https://sportypredict.com
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://sportypredict.com/sitemap.xml
+
+# Disallow authentication pages
+Disallow: /authentication/
+Disallow: /authentication/login
+Disallow: /authentication/register
+Disallow: /authentication/forgot-password
+
+# Disallow payment pages (sensitive user data)
+Disallow: /payment
+
+# Disallow API routes
+Disallow: /api/
+
+# Disallow admin routes if they exist
+Disallow: /admin/
+
+# Allow all prediction pages
+Allow: /football/
+Allow: /basketball/
+Allow: /tennis/
+Allow: /bet-of-the-day/
+
+# Allow content pages
+Allow: /blog/
+Allow: /news/
+Allow: /vip/
+Allow: /offers/
+Allow: /about
+Allow: /contact
+
+# Crawl delay (optional, adjust if needed)
+# Crawl-delay: 1

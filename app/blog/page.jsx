@@ -2,19 +2,16 @@
 
 import Image from "next/image";
 import { toast } from "sonner";
-import DOMPurify from "dompurify";
 import { useRouter } from "next/navigation";
 import Nothing from "@/app/components/Nothing";
 import { useBlogStore } from "@/app/store/Blog";
 import styles from "@/app/style/blog.module.css";
-import SideSlide from "@/app/components/SideSlide";
 import LoadingLogo from "@/app/components/LoadingLogo";
 import BlogCard from "@/app/components/BlogCard";
+import Breadcrumb from "@/app/components/Breadcrumb";
 import EmptyBlogImage from "@/public/assets/emptyblog.png";
 import { useSearchParams, usePathname } from "next/navigation";
 import { useEffect, useState, useCallback, useRef } from "react";
-import { FaFacebookF, FaInstagram, FaRegClock } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
 import { IoSearchOutline as SearchIcon } from "react-icons/io5";
 
 export default function Blog() {
@@ -35,8 +32,6 @@ export default function Blog() {
   } = useBlogStore();
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [selectedPost, setSelectedPost] = useState(null);
   const [activeCategory, setActiveCategory] = useState("");
   const [isSearching, setIsSearching] = useState(false);
 
@@ -70,18 +65,8 @@ export default function Blog() {
 
   const createShareUrl = (post) => {
     const slug = createSlug(post.title);
-    return `${window.location.origin}${pathname}?blog=${slug}`;
+    return `${window.location.origin}/blog/${slug}`;
   };
-
-  const findBlogBySlug = useCallback(
-    (slug) => {
-      if (!slug) return null;
-
-      const allBlogs = [...blogs, ...featuredBlogs];
-      return allBlogs.find((blog) => createSlug(blog.title) === slug);
-    },
-    [blogs, featuredBlogs, createSlug]
-  );
 
   const performSearch = useCallback(
     async (category = "", tag = "", query = "") => {
@@ -97,50 +82,10 @@ export default function Blog() {
     [fetchBlogs]
   );
 
-  const openModal = useCallback(
-    async (post, updateUrl = true) => {
-      try {
-        let postToShow = post;
-
-        if (post._id) {
-          try {
-            const detailedPost = await fetchSingleBlog(post._id);
-            postToShow = detailedPost || post;
-          } catch (fetchError) {
-            postToShow = post;
-          }
-        }
-
-        setSelectedPost(postToShow);
-        setShowModal(true);
-        document.body.style.overflow = "hidden";
-
-        if (updateUrl) {
-          const slug = createSlug(post.title);
-          router.replace(`${pathname}?blog=${slug}`, undefined, {
-            shallow: true,
-          });
-        }
-      } catch (err) {
-        toast.error("Failed to load blog post details");
-        setSelectedPost(post);
-        setShowModal(true);
-        document.body.style.overflow = "hidden";
-      }
-    },
-    [fetchSingleBlog, router, pathname, createSlug]
-  );
-
-  const closeModal = useCallback(() => {
-    setShowModal(false);
-    setSelectedPost(null);
-    document.body.style.overflow = "auto";
-
-    const currentParams = searchParams.get("blog");
-    if (currentParams) {
-      router.replace(pathname, undefined, { shallow: true });
-    }
-  }, [searchParams, router, pathname]);
+  const handleBlogNavigation = useCallback((post) => {
+    const slug = createSlug(post.title);
+    router.push(`/blog/${slug}`);
+  }, [router, createSlug]);
 
   const debouncedSearch = useCallback(
     (query) => {
@@ -175,32 +120,6 @@ export default function Blog() {
     }
   }, [fetchBlogs, fetchCategories, fetchFeaturedBlogs]);
 
-  useEffect(() => {
-    const sharedBlogSlug = searchParams.get("blog");
-    if (
-      sharedBlogSlug &&
-      (blogs.length > 0 || featuredBlogs.length > 0) &&
-      !showModal
-    ) {
-      const sharedPost = findBlogBySlug(sharedBlogSlug);
-
-      if (sharedPost) {
-        openModal(sharedPost, false);
-      } else {
-        toast.error("Blog post not found");
-        router.replace(pathname, undefined, { shallow: true });
-      }
-    }
-  }, [
-    searchParams,
-    blogs,
-    featuredBlogs,
-    showModal,
-    openModal,
-    findBlogBySlug,
-    router,
-    pathname,
-  ]);
 
   useEffect(() => {
     if (error) {
@@ -223,19 +142,12 @@ export default function Blog() {
   }, [activeCategory, performSearch, searchQuery]);
 
   useEffect(() => {
-    const handleEsc = (event) => {
-      if (event.keyCode === 27) closeModal();
-    };
-
-    window.addEventListener("keydown", handleEsc);
     return () => {
-      window.removeEventListener("keydown", handleEsc);
-      document.body.style.overflow = "auto";
       if (searchTimeoutRef.current) {
         clearTimeout(searchTimeoutRef.current);
       }
     };
-  }, [closeModal]);
+  }, []);
 
   const handleSearchInput = (e) => {
     setSearchQuery(e.target.value);
@@ -276,34 +188,6 @@ export default function Blog() {
     }
   };
 
-  const handleSocialShare = async (platform, post) => {
-    try {
-      const shareUrl = createShareUrl(post);
-      const url = encodeURIComponent(shareUrl);
-      const text = encodeURIComponent(`${post.title} - ${post.excerpt}`);
-
-      const socialUrls = {
-        facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
-        twitter: `https://twitter.com/intent/tweet?url=${url}&text=${text}`,
-        instagram: null, // Special case
-      };
-
-      if (platform === "instagram") {
-        await navigator.clipboard.writeText(shareUrl);
-        toast.success("Blog link copied! You can now paste it on Instagram");
-        return;
-      }
-
-      const socialShareUrl = socialUrls[platform];
-      if (!socialShareUrl) {
-        throw new Error("Unsupported platform");
-      }
-
-      window.open(socialShareUrl, "_blank", "width=600,height=400");
-    } catch (err) {
-      toast.error("Failed to share on social media");
-    }
-  };
 
   const openTelegram = () => {
     window.open("https://t.me/sportyPredictTG", "_blank");
@@ -313,39 +197,8 @@ export default function Blog() {
     <div className={styles.articleMeta}>
       <span>By {getAuthorName(post)}</span>
       <div className={styles.dateAndTime}>
-        <span>
-          <FaRegClock /> {getReadTime(post)}
-        </span>
         <span>{getFormattedDate(post)}</span>
       </div>
-    </div>
-  );
-
-  const renderSocialShareButtons = (post) => (
-    <div className={styles.socialShareLinks}>
-      {["facebook", "twitter", "instagram"].map((platform) => {
-        const icons = {
-          facebook: FaFacebookF,
-          twitter: FaXTwitter,
-          instagram: FaInstagram,
-        };
-        const Icon = icons[platform];
-
-        return (
-          <button
-            key={platform}
-            onClick={() => handleSocialShare(platform, post)}
-            aria-label={`Share on ${platform}`}
-            className={styles.socialIconBtn}
-          >
-            <Icon
-              className={styles.socialIcon}
-              alt={platform}
-              aria-label={platform}
-            />
-          </button>
-        );
-      })}
     </div>
   );
 
@@ -414,62 +267,19 @@ export default function Blog() {
     );
   };
 
-  const renderModalContent = () => {
-    if (!selectedPost) return null;
-
-    return (
-      <div className={styles.sideSlideContent}>
-        <div className={styles.sideSlideContentHeader}>
-          {selectedPost.tags && selectedPost.tags.length > 0 && (
-            <div className={styles.articleTags}>
-              {selectedPost.tags.map((tag) => (
-                <span key={tag}>#{tag}</span>
-              ))}
-            </div>
-          )}
-          {renderSocialShareButtons(selectedPost)}
-        </div>
-
-        <div className={styles.sideSlideImageContainer}>
-          <Image
-            className={styles.sideSlideImage}
-            src={selectedPost.image}
-            alt={selectedPost.title}
-            fill
-            sizes="100%"
-            quality={100}
-            style={{ objectFit: "cover" }}
-            priority={true}
-          />
-        </div>
-
-        <div className={styles.sideSlideInnerContentDetails}>
-          <div className={styles.SideSlideFooter}>
-            <div className={styles.dateAndTime}>
-              <span>
-                <FaRegClock /> {getReadTime(selectedPost)}
-              </span>
-            </div>
-            <span>{getFormattedDate(selectedPost)}</span>
-          </div>
-          <div className={styles.authorContainer}>
-            <span className={styles.category}>{selectedPost.category}</span>
-            <span>By {getAuthorName(selectedPost)}</span>
-          </div>
-          <h1 className={styles.sideSlideTitle}>{selectedPost.title}</h1>
-          <div
-            className={styles.sideSlideInnerContent}
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(selectedPost.content),
-            }}
-          />
-        </div>
-      </div>
-    );
-  };
 
   const featuredPost = featuredBlogs.length > 0 ? featuredBlogs[0] : null;
   const categories = storeCategories.map((cat) => cat.name || cat);
+
+  // Build breadcrumb items
+  const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    { label: "Blog", href: null },
+  ];
+
+  if (activeCategory) {
+    breadcrumbItems.push({ label: activeCategory, href: null });
+  }
 
   if (loading && blogs.length === 0 && !featuredPost && !isSearching) {
     return <LoadingLogo />;
@@ -482,6 +292,7 @@ export default function Blog() {
   return (
     <div className={styles.blogContainer}>
       {renderBlogHeader()}
+      <Breadcrumb items={breadcrumbItems} />
 
       <div className={styles.categoriesContainer}>
         {categories.map((category, index) => (
@@ -518,7 +329,7 @@ export default function Blog() {
               <p>{featuredPost.excerpt}</p>
               {renderPostMeta(featuredPost)}
               <button
-                onClick={() => openModal(featuredPost)}
+                onClick={() => handleBlogNavigation(featuredPost)}
                 className={styles.readMoreBtn}
               >
                 Read Full Article
@@ -540,7 +351,7 @@ export default function Blog() {
                 <BlogCard
                   key={post._id}
                   post={post}
-                  onReadMore={openModal}
+                  onReadMore={handleBlogNavigation}
                   onShare={handleShare}
                 />
               ))}
@@ -549,15 +360,6 @@ export default function Blog() {
         </div>
       </div>
       {renderTelegramSection()}
-
-      <SideSlide
-        isOpen={showModal}
-        onClose={closeModal}
-        closeOnOverlayClick={true}
-        showCloseButton={true}
-      >
-        {renderModalContent()}
-      </SideSlide>
     </div>
   );
 }

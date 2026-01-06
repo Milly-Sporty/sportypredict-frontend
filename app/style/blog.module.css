@@ -300,6 +300,7 @@
     gap: 15px;
     height: 100%;
     display: flex;
+    padding: 10px;
     flex-direction: column;
   }
 

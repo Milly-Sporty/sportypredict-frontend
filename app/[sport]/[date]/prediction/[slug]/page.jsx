@@ -14,6 +14,8 @@ import { usePredictionStore } from "@/app/store/Prediction";
 import EmptySportImage from "@/public/assets/emptysport.png";
 import { parseMatchSlug, teamNamesMatch } from "@/app/utility/UrlSlug";
 import { usePathname } from "next/navigation";
+import Breadcrumb from "@/app/components/Breadcrumb";
+import RelatedPredictions from "@/app/components/RelatedPredictions";
 
 export default function SingleSport() {
   const [activeTab, setActiveTab] = useState("preview"); 
@@ -38,6 +40,38 @@ export default function SingleSport() {
   } = usePredictionStore();
 
   const { adverts, fetchAdverts, loading: advertLoading } = useAdvertStore();
+
+  const formatSportName = (sport) => {
+    if (sport === "bet-of-the-day") {
+      return "Bet of the Day";
+    }
+    return sport.charAt(0).toUpperCase() + sport.slice(1);
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    {
+      label: `${formatSportName(currentSport)} Predictions`,
+      href: `/${currentSport}/${selectedDate}`,
+    },
+    {
+      label: formatDate(selectedDate),
+      href: `/${currentSport}/${selectedDate}`,
+    },
+    {
+      label: `${teamAFromUrl} vs ${teamBFromUrl}`,
+      href: null,
+    },
+  ];
 
   const innerBannerAds = adverts.filter((ad) => ad.location === "InnerBanner");
   const currentAd = innerBannerAds[currentAdIndex];
@@ -222,6 +256,7 @@ export default function SingleSport() {
   if (isLoading) {
     return (
       <div className={styles.singleSportEmpty}>
+        <Breadcrumb items={breadcrumbItems} />
         <Loading />
       </div>
     );
@@ -230,6 +265,7 @@ export default function SingleSport() {
   if (!match) {
     return (
       <div className={styles.singleSportEmpty}>
+        <Breadcrumb items={breadcrumbItems} />
         <Nothing
           Alt="No predictions"
           NothingImage={EmptySportImage}
@@ -254,6 +290,9 @@ export default function SingleSport() {
 
   return (
     <div className={styles.singleSportContainer}>
+      <Breadcrumb items={breadcrumbItems} />
+    <div className={styles.innerSingleSportContainer}>
+
       <div className={styles.singleSportWrapper}>
         <SingleCard
           leagueImage={match.leagueImage}
@@ -462,6 +501,8 @@ export default function SingleSport() {
             </div>
           </div>
         </div>
+      <RelatedPredictions currentPrediction={match} />
+
       </div>
 
       <div className={styles.sideContent}>
@@ -473,6 +514,7 @@ export default function SingleSport() {
         </div>
         <InnerBannerAdsSection />
       </div>
+    </div>
     </div>
   );
 }

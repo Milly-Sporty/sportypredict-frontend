@@ -2,7 +2,32 @@ import { NextResponse } from 'next/server';
 
 export function middleware(request) {
   const { pathname, searchParams } = request.nextUrl;
-  
+
+  // Blog redirects: /blog?blog=slug -> /blog/slug
+  if (pathname === '/blog' && searchParams.has('blog')) {
+    const slug = searchParams.get('blog');
+    const newUrl = new URL(`/blog/${slug}`, request.url);
+    // Preserve other query params if any
+    searchParams.delete('blog');
+    for (const [key, value] of searchParams.entries()) {
+      newUrl.searchParams.set(key, value);
+    }
+    return NextResponse.redirect(newUrl, 301);
+  }
+
+  // News redirects: /news?article=slug -> /news/slug
+  if (pathname === '/news' && searchParams.has('article')) {
+    const slug = searchParams.get('article');
+    const newUrl = new URL(`/news/${slug}`, request.url);
+    // Preserve other query params if any
+    searchParams.delete('article');
+    for (const [key, value] of searchParams.entries()) {
+      newUrl.searchParams.set(key, value);
+    }
+    return NextResponse.redirect(newUrl, 301);
+  }
+
+  // Sport date redirects
   const supportedSports = ['tennis', 'football', 'basketball', 'bet-of-the-day'];
   if (searchParams.has('date')) {
     const date = searchParams.get('date');
@@ -14,7 +39,7 @@ export function middleware(request) {
       for (const [key, value] of searchParams.entries()) {
         newUrl.searchParams.set(key, value);
       }
-      
+
       return NextResponse.redirect(newUrl, 301);
     }
     const predictionMatch = pathname.match(/^\/(tennis|football|basketball|bet-of-the-day)\/prediction\/(.+)$/);
@@ -25,16 +50,18 @@ export function middleware(request) {
       for (const [key, value] of searchParams.entries()) {
         newUrl.searchParams.set(key, value);
       }
-      
+
       return NextResponse.redirect(newUrl, 301);
     }
   }
-  
+
   return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    '/(tennis|football|basketball|bet-of-the-day)/:path*'
+    '/(tennis|football|basketball|bet-of-the-day)/:path*',
+    '/blog',
+    '/news'
   ]
 };

@@ -1,10 +1,40 @@
+import Link from "next/link";
 import Image from "next/image";
 import { IoMdShare } from "react-icons/io";
 import styles from "@/app/style/newsCard.module.css";
 
 export default function NewsCard({ post, onReadMore, onShare }) {
+  const handleShare = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onShare) {
+      onShare(post);
+    }
+  };
+
+  // Create slug from title
+  const createSlug = (title) => {
+    if (!title) return "";
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9 -]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  };
+
+  const slug = createSlug(post.title);
+  const newsUrl = `/news/${slug}`;
+  const formatCategory = (category) => {
+    return category.charAt(0).toUpperCase() + category.slice(1);
+  };
+
   return (
-    <div className={styles.articleCard}>
+    <Link
+      href={newsUrl}
+      className={styles.articleCard}
+      title={`${post.title} - ${formatCategory(post.category)}`}
+    >
       <div className={styles.articleImageWrapper}>
         <Image
           className={styles.articleImage}
@@ -27,18 +57,18 @@ export default function NewsCard({ post, onReadMore, onShare }) {
       </div>
       <div className={styles.articleContent}>
         <div className={styles.articleHeader}>
-          <span>{post.category}</span>
+          <span>{formatCategory(post.category)}</span>
           <IoMdShare
-            onClick={() => onShare(post)}
+            onClick={handleShare}
             className={styles.shareIcon}
             alt="Share icon"
             aria-label="Share icon"
           />
         </div>
-        <h3>{post.title} <div onClick={() => onReadMore(post)} className={styles.readMoreBtn}>
+        <h3>{post.title} <div className={styles.readMoreBtn}>
             Read More
           </div></h3>
       </div>
-    </div>
+    </Link>
   );
 }

@@ -3,10 +3,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import LogoImg from "@/public/assets/logoWhite.png";
 import styles from "@/app/style/footer.module.css";
+import { usePredictionStore } from "@/app/store/Prediction";
 
 import {
   FaWhatsapp,
@@ -25,6 +26,36 @@ export default function Footer() {
   const router = useRouter();
   const phoneNumber = "+254703147237";
   const currentYear = new Date().getFullYear();
+  const { predictions } = usePredictionStore();
+
+  // Get today's date for dynamic prediction links
+  const today = useMemo(() => new Date().toISOString().split("T")[0], []);
+
+  // Calculate top 4 most popular leagues dynamically
+  const topLeagues = useMemo(() => {
+    if (!predictions || predictions.length === 0) return [];
+
+    // Count predictions per league
+    const leagueCounts = {};
+    predictions.forEach((pred) => {
+      if (pred.league && pred.category) {
+        const key = `${pred.category}|${pred.league}`;
+        if (!leagueCounts[key]) {
+          leagueCounts[key] = {
+            league: pred.league,
+            category: pred.category,
+            count: 0,
+          };
+        }
+        leagueCounts[key].count++;
+      }
+    });
+
+    // Sort by count and get top 4
+    return Object.values(leagueCounts)
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 4);
+  }, [predictions]);
 
   const openSocialMedia = (url) => {
     window.open(url, "_blank");
@@ -64,20 +95,98 @@ export default function Footer() {
           </div>
 
           <div className={styles.linksSection}>
+            {/* Column 1: Sport Predictions */}
             <div className={styles.linkColumn}>
-              <h4>Services</h4>
-              <Link href="/vip">VIP Membership</Link>
-              <Link href="/payment">How to Pay</Link>
-              <Link href="/offers">Special Offers</Link>
+              <h4>Sport Predictions</h4>
+              <Link href={`/football/${today}`} title="Today's Football Predictions">
+                Football Predictions
+              </Link>
+              <Link href={`/basketball/${today}`} title="Today's Basketball Predictions">
+                Basketball Predictions
+              </Link>
+              <Link href={`/tennis/${today}`} title="Today's Tennis Predictions">
+                Tennis Predictions
+              </Link>
+              <Link href={`/bet-of-the-day/${today}`} title="Today's Bet of the Day">
+                Bet of the Day
+              </Link>
             </div>
+
+            {/* Column 2: Content & Resources */}
             <div className={styles.linkColumn}>
-              <h4>Legal</h4>
-              <Link href="/terms">Terms & Conditions</Link>
-              <Link href="/privacy">Privacy Policy</Link>
-              <Link href="/refund">Refund Policy</Link>
+              <h4>Content & Resources</h4>
+              <Link href="/news" title="Latest Sports News">
+                Sports News
+              </Link>
+              <Link href="/blog" title="Sports Betting Tips & Analysis">
+                Sports Blog
+              </Link>
+              <Link href="/vip" title="VIP Predictions & Premium Tips">
+                VIP Predictions
+              </Link>
+              <Link href="/offers" title="Special Offers & Promotions">
+                Special Offers
+              </Link>
             </div>
-            <div className={styles.contactSection}>
-              <h4>Contact</h4>
+
+            {/* Column 3: Popular Leagues */}
+            <div className={styles.linkColumn}>
+              <h4>Popular Leagues</h4>
+              {topLeagues.length > 0 ? (
+                topLeagues.map((item, index) => {
+                  // Extract display name (remove country prefix if present)
+                  const displayName = item.league.includes(", ")
+                    ? item.league.split(", ").slice(1).join(", ")
+                    : item.league;
+
+                  return (
+                    <Link
+                      key={index}
+                      href={`/${item.category}/${today}/${encodeURIComponent(
+                        item.league
+                      )}`}
+                      title={`${displayName} Predictions`}
+                    >
+                      {displayName}
+                    </Link>
+                  );
+                })
+              ) : (
+                <>
+                  <Link href={`/football/${today}`} title="Football Predictions">
+                    Football
+                  </Link>
+                  <Link
+                    href={`/basketball/${today}`}
+                    title="Basketball Predictions"
+                  >
+                    Basketball
+                  </Link>
+                  <Link href={`/tennis/${today}`} title="Tennis Predictions">
+                    Tennis
+                  </Link>
+                  <Link
+                    href={`/bet-of-the-day/${today}`}
+                    title="Bet of the Day"
+                  >
+                    Bet of the Day
+                  </Link>
+                </>
+              )}
+            </div>
+
+            {/* Column 4: Company & Support */}
+            <div className={styles.linkColumn}>
+              <h4>Company & Support</h4>
+              <Link href="/about" title="About SportyPredict">
+                About Us
+              </Link>
+              <Link href="/contact" title="Contact SportyPredict">
+                Contact Us
+              </Link>
+              <Link href="/payment" title="How to Pay for VIP">
+                How to Pay
+              </Link>
               <div className={styles.contactInfo}>
                 <span
                   onClick={() =>
@@ -85,6 +194,7 @@ export default function Footer() {
                       "https://wa.me/+254703147237?text=Hi SportyPredict, I want to buy VIP subscription"
                     )
                   }
+                  style={{ cursor: "pointer" }}
                 >
                   <FaPhone /> +254703147237
                 </span>
@@ -92,6 +202,23 @@ export default function Footer() {
                   <FaEnvelope /> contact@sportypredict.com
                 </span>
               </div>
+            </div>
+
+            {/* Column 5: Legal */}
+            <div className={styles.linkColumn}>
+              <h4>Legal</h4>
+              <Link href="/terms" title="Terms & Conditions">
+                Terms & Conditions
+              </Link>
+              <Link href="/privacy" title="Privacy Policy">
+                Privacy Policy
+              </Link>
+              <Link href="/refund" title="Refund Policy">
+                Refund Policy
+              </Link>
+              <Link href="/disclaimer" title="Disclaimer">
+                Disclaimer
+              </Link>
             </div>
           </div>
         </div>

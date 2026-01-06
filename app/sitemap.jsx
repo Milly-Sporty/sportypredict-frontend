@@ -32,7 +32,7 @@ async function getMatchUrls() {
   try {
     const baseUrl = process.env.NODE_ENV === 'development'
       ? 'http://localhost:3000'
-      : (process.env.NEXT_PUBLIC_API_URL || 'https://sportypredict.com');
+      : (process.env.NEXT_PUBLIC_WEBSITE_URL || 'https://sportypredict.com');
 
     const timestamp = Date.now();
     const apiUrl = `${baseUrl}/api/predictions/sitemap?t=${timestamp}`;
@@ -154,7 +154,7 @@ async function getNewsUrls() {
   try {
     const baseUrl = process.env.NODE_ENV === 'development' 
       ? 'http://localhost:3000' 
-      : (process.env.NEXT_PUBLIC_API_URL || 'https://sportypredict.com');
+      : (process.env.NEXT_PUBLIC_WEBSITE_URL || 'https://sportypredict.com');
     
     const timestamp = Date.now();
     const apiUrl = `${baseUrl}/api/news/sitemap?t=${timestamp}`;
@@ -190,7 +190,7 @@ async function getNewsUrls() {
         .replace(/^-+|-+$/g, '');
 
       return {
-        url: `https://sportypredict.com/news?article=${slug}`,
+        url: `https://sportypredict.com/news/${slug}`,
         lastModified: getLocalDate(article.updatedAt || article.publishDate || article.createdAt),
         changeFrequency: 'daily',
         priority: article.featured ? 0.8 : 0.7,
@@ -208,7 +208,7 @@ async function getBlogUrls() {
   try {
     const baseUrl = process.env.NODE_ENV === 'development' 
       ? 'http://localhost:3000' 
-      : (process.env.NEXT_PUBLIC_API_URL || 'https://sportypredict.com');
+      : (process.env.NEXT_PUBLIC_WEBSITE_URL || 'https://sportypredict.com');
     
     const timestamp = Date.now();
     const apiUrl = `${baseUrl}/api/blog/sitemap?t=${timestamp}`;
@@ -248,7 +248,7 @@ async function getBlogUrls() {
         .replace(/^-+|-+$/g, '');
 
       return {
-        url: `https://sportypredict.com/blog?blog=${slug}`,
+        url: `https://sportypredict.com/blog/${slug}`,
         lastModified: getLocalDate(blog.updatedAt || blog.publishedAt || blog.createdAt),
         changeFrequency: blog.featured ? 'weekly' : 'monthly',
         priority: blog.featured ? 0.8 : 0.6,

@@ -24,7 +24,12 @@ import { usePathname, useParams } from "next/navigation";
 export default function Sport() {
   const router = useRouter();
   const pathname = usePathname();
-  const params = useParams(); 
+  const params = useParams();
+
+  const date = params.date;
+  const sport = params.sport;
+  const filters = params.filters;
+
   const [searchKey, setSearchKey] = useState("");
 
   const currentSport = decodeURIComponent(pathname.split("/")[1]);
@@ -60,7 +65,7 @@ export default function Sport() {
 
   useEffect(() => {
     const loadPredictions = async () => {
-      const urlDate = params.date;
+      const urlDate = date;
 
       if (!urlDate) return;
 

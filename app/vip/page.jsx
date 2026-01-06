@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import VipCard from "@/app/components/VipCard";
 import Nothing from "@/app/components/Nothing";
+import Breadcrumb from "@/app/components/Breadcrumb";
 import { useAuthStore } from "@/app/store/Auth";
 import styles from "@/app/style/sport.module.css";
 import VipFilter from "@/app/components/VipFilter";
@@ -517,8 +518,14 @@ useEffect(() => {
     );
   }
 
+  const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    { label: "VIP Predictions", href: null },
+  ];
+
   return (
     <div className={styles.sportContainer}>
+      <Breadcrumb items={breadcrumbItems} />
       <div className={styles.filtersNothingContainer}>
         <div className={styles.sportContainerHeader}>
           <VipStatusBanner

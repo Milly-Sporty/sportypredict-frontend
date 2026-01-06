@@ -21,11 +21,17 @@ import EmptySportImage from "@/public/assets/emptysport.png";
 import ExclusiveOffers from "@/app/components/ExclusiveOffer";
 import { IoIosArrowForward as RightIcon } from "react-icons/io";
 import { usePathname, useParams } from "next/navigation";
+import Breadcrumb from "@/app/components/Breadcrumb";
 
 export default function Sport() {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
+
+  // Extract params to avoid Next.js 15 warning
+  const date = params.date;
+  const sport = params.sport;
+
   const [isMobile, setMobile] = useState(false);
   const [searchKey, setSearchKey] = useState("");
 
@@ -63,6 +69,37 @@ export default function Sport() {
 
   const currentFilters = parseFiltersFromPath();
 
+  const formatSportName = (sport) => {
+    if (sport === "bet-of-the-day") {
+      return "Bet of the Day";
+    }
+    return sport.charAt(0).toUpperCase() + sport.slice(1);
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    {
+      label: `${formatSportName(currentSport)} Predictions`,
+      href: `/${currentSport}/${date}`,
+    },
+  ];
+
+  if (date) {
+    breadcrumbItems.push({
+      label: formatDate(date),
+      href: null,
+    });
+  }
+
   const renderPredictionInfo = useCallback(() => {
     switch (currentSport) {
       case "football":
@@ -96,7 +133,7 @@ export default function Sport() {
 
   useEffect(() => {
     const loadPredictions = async () => {
-      const urlDate = params.date;
+      const urlDate = date;
 
       if (!urlDate) return;
 
@@ -109,7 +146,7 @@ export default function Sport() {
     };
 
     loadPredictions();
-  }, [params.date, currentSport, fetchPredictions]);
+  }, [date, currentSport, fetchPredictions]);
 
   useEffect(() => {
     if (error) {
@@ -185,7 +222,7 @@ export default function Sport() {
   const handleCardClick = (teamA, teamB, id) => {
     if (id === "empty" || !teamA || !teamB) return;
 
-    let selectedDate = params.date;
+    let selectedDate = date;
     if (!selectedDate) {
       const today = new Date();
       selectedDate = today.toISOString().split("T")[0];
@@ -201,6 +238,7 @@ export default function Sport() {
     return (
       <div className={styles.sportContainer}>
         <Banner />
+        <Breadcrumb items={breadcrumbItems} />
         <div className={styles.filtersContainer}>
           <MobileFilter />
         </div>
@@ -219,6 +257,7 @@ export default function Sport() {
     return (
       <div className={styles.sportContainer}>
         <Banner />
+        <Breadcrumb items={breadcrumbItems} />
         <div className={styles.filtersContainer}>
           <MobileFilter />
         </div>
@@ -230,8 +269,8 @@ export default function Sport() {
             Text={
               searchKey || hasActiveFilters
                 ? `No ${currentSport} predictions match your filters${
-                    params.date
-                      ? ` for ${new Date(params.date).toLocaleDateString()}`
+                    date
+                      ? ` for ${new Date(date).toLocaleDateString()}`
                       : ""
                   }`
                 : `No ${currentSport} predictions yet! Check back later.`
@@ -246,6 +285,7 @@ export default function Sport() {
   return (
     <div className={styles.sportContainer}>
       <Banner />
+      <Breadcrumb items={breadcrumbItems} />
       <div className={styles.filtersContainer}>
         <MobileFilter />
       </div>

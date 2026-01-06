@@ -5,6 +5,7 @@
     height: fit-content;
     flex-direction: column;
     border-radius: 12px;
+    color: var(--primary-color);
   }
 
   .articleCard:hover {

@@ -336,8 +336,9 @@ export default function SideNavComponent() {
             <div className={styles.sideNavContainerTop}>
               <Link
                 href="/"
+                title="SportyPredict Home - Free sports predictions"
                 className={`${styles.sideNavLinkContainer} ${
-                  pathname === "/"  
+                  pathname === "/"
                     ? styles.activesideNav
                     : ""
                 }`}
@@ -349,6 +350,7 @@ export default function SideNavComponent() {
               
               <Link
                 href="/vip"
+                title="VIP Predictions - Premium sports betting tips"
                 className={`${styles.sideNavLinkContainer} ${
                   pathname === "/vip" || pathname.startsWith("/vip/")
                     ? styles.activesideNav
@@ -361,6 +363,7 @@ export default function SideNavComponent() {
               </Link>
               <Link
                 href="/payment"
+                title="How to pay for VIP subscription"
                 className={`${styles.sideNavLinkContainer} ${
                   pathname === "/payment" ||
                   pathname.startsWith("/payment/")
@@ -374,6 +377,7 @@ export default function SideNavComponent() {
               </Link>
                   <Link
                 href="/bet-of-the-day"
+                title="Today's best betting tip and prediction"
                 className={`${styles.sideNavLinkContainer} ${
                   pathname === "/bet-of-the-day" || pathname.startsWith("/bet-of-the-day/")
                     ? styles.activesideNav
@@ -389,6 +393,7 @@ export default function SideNavComponent() {
               </Link>
               <Link
                 href="/football"
+                title="Football predictions and betting tips"
                 className={`${styles.sideNavLinkContainer} ${
                   pathname === "/football" ||
                   pathname.startsWith("/football/")
@@ -403,9 +408,10 @@ export default function SideNavComponent() {
                 />
                 <h1>Football</h1>
               </Link>
-          
+
               <Link
                 href="/basketball"
+                title="Basketball predictions and NBA betting tips"
                 className={`${styles.sideNavLinkContainer} ${
                   pathname === "/basketball" ||
                   pathname.startsWith("/basketball/")
@@ -422,6 +428,7 @@ export default function SideNavComponent() {
               </Link>
               <Link
                 href="/tennis"
+                title="Tennis predictions and betting tips"
                 className={`${styles.sideNavLinkContainer} ${
                   pathname === "/tennis" ||
                   pathname.startsWith("/tennis/")
@@ -439,6 +446,7 @@ export default function SideNavComponent() {
                 <>
                   <Link
                     href="/news"
+                    title="Latest sports news and updates"
                     className={`${styles.sideNavLinkContainer} ${
                       pathname === "/news" ? styles.activesideNav : ""
                     }`}
@@ -449,6 +457,7 @@ export default function SideNavComponent() {
                   </Link>
                   <Link
                     href="/blog"
+                    title="Sports betting tips, analysis, and expert insights"
                     className={`${styles.sideNavLinkContainer} ${
                       pathname === "/blog" ? styles.activesideNav : ""
                     }`}
@@ -459,6 +468,7 @@ export default function SideNavComponent() {
                   </Link>
                   <Link
                     href="/offers"
+                    title="Exclusive betting offers and promotions"
                     className={`${styles.sideNavLinkContainer} ${
                       pathname === "/offers" ? styles.activesideNav : ""
                     }`}
@@ -469,6 +479,7 @@ export default function SideNavComponent() {
                   </Link>
                   <Link
                     href="/about"
+                    title="Learn more about SportyPredict"
                     className={`${styles.sideNavLinkContainer} ${
                       pathname === "/about" ? styles.activesideNav : ""
                     }`}
@@ -479,6 +490,7 @@ export default function SideNavComponent() {
                   </Link>
                   <Link
                     href="/contact"
+                    title="Get in touch with SportyPredict"
                     className={`${styles.sideNavLinkContainer} ${
                       pathname === "/contact" ? styles.activesideNav : ""
                     }`}

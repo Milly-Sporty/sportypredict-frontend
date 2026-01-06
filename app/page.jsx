@@ -127,7 +127,7 @@ export default function Home() {
       .replace(/\s+/g, "-")
       .replace(/-+/g, "-")
       .replace(/^-+|-+$/g, "");
-    router.push(`/blog?blog=${slug}`);
+    router.push(`/blog/${slug}`);
   }, [router]);
 
   const handleNewsReadMore = useCallback((post) => {
@@ -137,7 +137,7 @@ export default function Home() {
       .replace(/\s+/g, "-")
       .replace(/-+/g, "-")
       .replace(/^-+|-+$/g, "");
-    router.push(`/news?article=${slug}`);
+    router.push(`/news/${slug}`);
   }, [router]);
 
   const handleShare = useCallback(async (post, type) => {
@@ -149,7 +149,7 @@ export default function Home() {
         .replace(/-+/g, "-")
         .replace(/^-+|-+$/g, "");
 
-      const shareUrl = `${window.location.origin}/${type}?${type}=${slug}`;
+      const shareUrl = `${window.location.origin}/${type}/${slug}`;
       
       if (navigator.share) {
         await navigator.share({

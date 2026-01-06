@@ -1,0 +1,191 @@
+@media screen {
+  .relatedContainer {
+    width: 100%;
+    padding: var(--padding-lg) 0;
+    margin: var(--padding-xxl) 0;
+    border-top: 1px solid var(--light-background-color);
+  }
+
+  .relatedTitle {
+    font-size: var(--font-size-2);
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--padding-lg);
+    color: var(--primary-color);
+  }
+
+  .relatedGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--padding-lg);
+  }
+
+  .relatedCard {
+    width: 100%;
+    display: flex;
+    padding: 0 var(--padding-sm);
+    border-radius: var(--radius-sm);
+    flex-direction: column;
+    text-transform: capitalize;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    background-color: var(--background-color);
+    border: 2px solid var(--light-background-color);
+  }
+
+  .relatedCard:hover {
+    transform: translateY(-4px);
+    border: none;
+    box-shadow: var(--shadow-background-color);
+  }
+
+  /* Card Top - League Info */
+  .cardTop {
+    gap: var(--padding-sm);
+    display: flex;
+    padding: var(--padding-sx) 0;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--light-background-color);
+  }
+
+  .leagueInfo {
+    gap: var(--padding-sx);
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .leagueImage {
+    flex-shrink: 0;
+    border-radius: 50%;
+  }
+
+  .leagueName {
+    font-size: var(--font-size-4);
+    font-weight: var(--font-weight-regular);
+    text-transform: capitalize;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .cardMiddle {
+    gap: var(--padding-sx);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: var(--padding-sm) 0;
+    justify-content: space-evenly;
+  }
+
+  .teamContainer {
+    gap: var(--padding-lg);
+    width: 100%;
+    display: flex;
+    height: fit-content;
+    align-items: center;
+    justify-content: space-between;
+
+  }
+
+  .teamInner {
+    gap: var(--padding-sx);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .teamInner h2 {
+    font-size: var(--font-size-4);
+    font-weight: var(--font-weight-regular);
+    text-align: center;
+    text-transform: capitalize;
+  }
+
+  .teamImage {
+    flex-shrink: 0;
+    object-fit: cover;
+  }
+
+  .circularShape {
+    border-radius: 360%;
+  }
+
+  .matchInfo {
+    gap: var(--padding-sm);
+    width: 100%;
+    display: flex;
+    height: fit-content;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+
+  }
+
+  .matchInfo h1 {
+    font-size: var(--font-size-4);
+    font-weight: var(--font-weight-regular);
+  }
+
+  .matchInfo h3 {
+    font-size: var(--font-size-4);
+    font-weight: var(--font-weight-regular);
+  }
+
+  /* Card Footer - Date Info */
+  .cardFooter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--padding-sm);
+    padding: var(--padding-sx) 0;
+    border-top: 1px solid var(--light-background-color);
+  }
+
+  .matchDate {
+    font-size: var(--font-size-5);
+    color: var(--light-primary-color);
+    font-weight: var(--font-weight-regular);
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    .relatedContainer {
+      padding: var(--padding-md) 0;
+      margin: var(--padding-lg) 0;
+    }
+
+    .relatedTitle {
+      font-size: var(--font-size-2);
+      margin-bottom: var(--padding-md);
+    }
+
+    .relatedGrid {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: var(--padding-md);
+    }
+
+    .relatedCard {
+      padding: 0 var(--padding-sm);
+    }
+  }
+
+  /* Very small screens */
+  @media (max-width: 480px) {
+    .relatedGrid {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+/* Larger devices */
+@media only screen and (min-width: 48em) {
+  .relatedCard {
+    width: 100%;
+  }
+}

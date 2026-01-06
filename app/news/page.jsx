@@ -1,20 +1,16 @@
 "use client";
 
 import { toast } from "sonner";
-import Image from "next/image";
-import DOMPurify from "dompurify";
-import { FaXTwitter } from "react-icons/fa6";
 import Nothing from "@/app/components/Nothing";
 import { useNewsStore } from "@/app/store/News";
-import SideSlide from "@/app/components/SideSlide";
 import NewsCard from "@/app/components/NewsCard";
 import Dropdown from "@/app/components/Dropdown";
+import Breadcrumb from "@/app/components/Breadcrumb";
 import styles from "@/app/style/blog.module.css";
 import LoadingLogo from "@/app/components/LoadingLogo";
 import EmptyNewsImg from "@/public/assets/emptynews.png";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { FaFacebookF, FaInstagram, FaRegClock } from "react-icons/fa";
 import { IoSearchOutline as SearchIcon } from "react-icons/io5";
 
 export default function SportsNews() {
@@ -34,8 +30,6 @@ export default function SportsNews() {
   } = useNewsStore();
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [selectedPost, setSelectedPost] = useState(null);
   const [activeCategory, setActiveCategory] = useState("");
   const [isSearching, setIsSearching] = useState(false);
 
@@ -73,16 +67,8 @@ export default function SportsNews() {
 
   const createShareUrl = (post) => {
     const slug = createSlug(post.title);
-    return `${window.location.origin}${pathname}?article=${slug}`;
+    return `${window.location.origin}/news/${slug}`;
   };
-
-  const findArticleBySlug = useCallback(
-    (slug) => {
-      if (!slug) return null;
-      return articles.find((article) => createSlug(article.title) === slug);
-    },
-    [articles, createSlug]
-  );
 
   const loadData = useCallback(
     async (category = "", search = "") => {
@@ -104,39 +90,10 @@ export default function SportsNews() {
     [fetchArticles, fetchNewsByCategory, searchNews]
   );
 
-  const openModal = useCallback(
-    async (post, updateUrl = true) => {
-      try {
-        setSelectedPost(post);
-        setShowModal(true);
-        document.body.style.overflow = "hidden";
-
-        if (updateUrl) {
-          const slug = createSlug(post.title);
-          router.replace(`${pathname}?article=${slug}`, undefined, {
-            shallow: true,
-          });
-        }
-      } catch (err) {
-        toast.error("Failed to load article details");
-        setSelectedPost(post);
-        setShowModal(true);
-        document.body.style.overflow = "hidden";
-      }
-    },
-    [router, pathname, createSlug]
-  );
-
-  const closeModal = useCallback(() => {
-    setShowModal(false);
-    setSelectedPost(null);
-    document.body.style.overflow = "auto";
-
-    const currentParams = searchParams.get("article");
-    if (currentParams) {
-      router.replace(pathname, undefined, { shallow: true });
-    }
-  }, [searchParams, router, pathname]);
+  const handleNewsNavigation = useCallback((post) => {
+    const slug = createSlug(post.title);
+    router.push(`/news/${slug}`);
+  }, [router, createSlug]);
 
   const debouncedSearch = useCallback(
     (query) => {
@@ -166,27 +123,6 @@ export default function SportsNews() {
     }
   }, [loadData]);
 
-  useEffect(() => {
-    const sharedArticleSlug = searchParams.get("article");
-    if (sharedArticleSlug && articles.length > 0 && !showModal) {
-      const sharedPost = findArticleBySlug(sharedArticleSlug);
-
-      if (sharedPost) {
-        openModal(sharedPost, false);
-      } else {
-        toast.error("Article not found");
-        router.replace(pathname, undefined, { shallow: true });
-      }
-    }
-  }, [
-    articles,
-    searchParams,
-    showModal,
-    openModal,
-    findArticleBySlug,
-    router,
-    pathname,
-  ]);
 
   useEffect(() => {
     if (error) {
@@ -204,19 +140,12 @@ export default function SportsNews() {
   }, [searchQuery, debouncedSearch, loadData, activeCategory]);
 
   useEffect(() => {
-    const handleEsc = (event) => {
-      if (event.keyCode === 27) closeModal();
-    };
-
-    window.addEventListener("keydown", handleEsc);
     return () => {
-      window.removeEventListener("keydown", handleEsc);
-      document.body.style.overflow = "auto";
       if (searchTimeoutRef.current) {
         clearTimeout(searchTimeoutRef.current);
       }
     };
-  }, [closeModal]);
+  }, []);
 
   const handleSearchInput = (e) => {
     setSearchQuery(e.target.value);
@@ -256,64 +185,6 @@ export default function SportsNews() {
     }
   };
 
-  const handleSocialShare = async (platform, post) => {
-    try {
-      const shareUrl = createShareUrl(post);
-      const url = encodeURIComponent(shareUrl);
-      const text = encodeURIComponent(
-        `${post.title} - ${post.summary || "Sports News"}`
-      );
-
-      const socialUrls = {
-        facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
-        twitter: `https://twitter.com/intent/tweet?url=${url}&text=${text}`,
-        instagram: null,
-      };
-
-      if (platform === "instagram") {
-        await navigator.clipboard.writeText(shareUrl);
-        toast.success("Article link copied! You can now paste it on Instagram");
-        return;
-      }
-
-      const socialShareUrl = socialUrls[platform];
-      if (!socialShareUrl) {
-        throw new Error("Unsupported platform");
-      }
-
-      window.open(socialShareUrl, "_blank", "width=600,height=400");
-    } catch (err) {
-      toast.error("Failed to share on social media");
-    }
-  };
-
-  const renderSocialShareButtons = (post) => (
-    <div className={styles.socialShareLinks}>
-      {["facebook", "twitter", "instagram"].map((platform) => {
-        const icons = {
-          facebook: FaFacebookF,
-          twitter: FaXTwitter,
-          instagram: FaInstagram,
-        };
-        const Icon = icons[platform];
-
-        return (
-          <button
-            key={platform}
-            onClick={() => handleSocialShare(platform, post)}
-            aria-label={`Share on ${platform}`}
-            className={styles.socialIconBtn}
-          >
-            <Icon
-              className={styles.socialIcon}
-              alt={platform}
-              aria-label={platform}
-            />
-          </button>
-        );
-      })}
-    </div>
-  );
 
   const renderNewsHeader = () => (
     <div className={styles.blogBanner}>
@@ -364,68 +235,21 @@ export default function SportsNews() {
     );
   };
 
-  const renderModalContent = () => {
-    if (!selectedPost) return null;
-
-    return (
-      <div className={styles.sideSlideContent}>
-        <div className={styles.sideSlideContentHeader}>
-          {selectedPost.tags && selectedPost.tags.length > 0 && (
-            <div className={styles.articleTags}>
-              {selectedPost.tags.map((tag) => (
-                <span key={tag}>#{tag}</span>
-              ))}
-            </div>
-          )}
-          {renderSocialShareButtons(selectedPost)}
-        </div>
-
-        <div className={styles.sideSlideImageContainer}>
-          <Image
-            className={styles.sideSlideImage}
-            src={selectedPost.image}
-            alt={selectedPost.title}
-            fill
-            sizes="100%"
-            quality={100}
-            style={{ objectFit: "cover" }}
-            priority={true}
-          />
-        </div>
-
-        <div className={styles.sideSlideInnerContentDetails}>
-          <div className={styles.SideSlideFooter}>
-            <div className={styles.dateAndTime}>
-              <span>
-                <FaRegClock /> {getReadTime(selectedPost)}
-              </span>
-            </div>
-            <span>{getFormattedDate(selectedPost)}</span>
-          </div>
-          <div className={styles.authorContainer}>
-            <span className={styles.category}>
-              {formatCategory(selectedPost.category)}
-            </span>
-            <span>By {getAuthorName(selectedPost)}</span>
-          </div>
-          <h2 className={styles.sideSlideTitle}>{selectedPost.title}</h2>
-          <div
-            className={styles.sideSlideInnerContent}
-            dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(
-                selectedPost.content || selectedPost.summary
-              ),
-            }}
-          />
-        </div>
-      </div>
-    );
-  };
 
   const categoryOptions = categories.map((category) => ({
     name: category,
     code: category,
   }));
+
+  // Build breadcrumb items
+  const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    { label: "News", href: null },
+  ];
+
+  if (activeCategory) {
+    breadcrumbItems.push({ label: formatCategory(activeCategory), href: null });
+  }
 
   if ((loading || isSearching) && articles.length === 0) {
     return (
@@ -442,6 +266,7 @@ export default function SportsNews() {
   return (
     <div className={styles.blogContainer}>
       {renderNewsHeader()}
+      <Breadcrumb items={breadcrumbItems} />
 
       <div className={styles.dropdownContainerWp}>
         <h2>Latest Sports News</h2>
@@ -465,22 +290,13 @@ export default function SportsNews() {
               <NewsCard
                 key={post._id}
                 post={post}
-                onReadMore={openModal}
+                onReadMore={handleNewsNavigation}
                 onShare={handleShare}
               />
             ))}
           </div>
         )}
       </div>
-
-      <SideSlide
-        isOpen={showModal}
-        onClose={closeModal}
-        closeOnOverlayClick={true}
-        showCloseButton={true}
-      >
-        {renderModalContent()}
-      </SideSlide>
     </div>
   );
 }

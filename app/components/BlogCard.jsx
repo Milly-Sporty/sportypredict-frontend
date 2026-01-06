@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
 import { IoMdShare } from "react-icons/io";
@@ -14,20 +15,34 @@ export default function BlogCard({
     toast.error(`Failed to load image for: ${post.title}`);
   };
 
-  const handleReadMore = () => {
-    if (onReadMore) {
-      onReadMore(post);
-    }
-  };
-
-  const handleShare = () => {
+  const handleShare = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (onShare) {
       onShare(post);
     }
   };
 
+  // Create slug from title
+  const createSlug = (title) => {
+    if (!title) return "";
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9 -]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  };
+
+  const slug = createSlug(post.title);
+  const blogUrl = `/blog/${slug}`;
+
   return (
-    <div className={`${styles.articleCard} ${className}`}>
+    <Link
+      href={blogUrl}
+      className={`${styles.articleCard} ${className}`}
+      title={`${post.title} - ${post.category}`}
+    >
       <div className={styles.articleImageWrapper}>
         <Image
           className={styles.articleImage}
@@ -41,7 +56,7 @@ export default function BlogCard({
           }}
           priority={true}
         />
-     
+
       </div>
       <div className={styles.articleContent}>
         <div className={styles.articleHeader}>
@@ -55,11 +70,11 @@ export default function BlogCard({
         </div>
         <h3>
           {post.title}
-          <div onClick={handleReadMore} className={styles.readMoreBtnT}>
+          <div className={styles.readMoreBtnT}>
             Read More
           </div>
         </h3>
       </div>
-    </div>
+    </Link>
   );
 }
