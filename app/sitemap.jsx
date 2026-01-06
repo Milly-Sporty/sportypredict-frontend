@@ -74,7 +74,7 @@ async function getMatchUrls() {
       const teamA = prediction.teamA || prediction.homeTeam || prediction.cleanTeamA;
       const teamB = prediction.teamB || prediction.awayTeam || prediction.cleanTeamB;
 
-      const slug = prediction.slug || createMatchSlug(teamA, teamB);
+      const slug = createMatchSlug(teamA, teamB);
 
       const getSportPath = (sport, category) => {
         if (category === 'bet-of-the-day') return 'bet-of-the-day';
