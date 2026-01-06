@@ -6,12 +6,19 @@ export async function generateMetadata({ params }) {
   
   const filter1 = filters && filters[0] ? decodeURIComponent(filters[0]) : null;
   const filter2 = filters && filters[1] ? decodeURIComponent(filters[1]) : null;
-  
-  const matchDate = date ? new Date(date).toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'long', 
-    year: 'numeric'
-  }) : 'Today';
+
+  // Validate and format date
+  let matchDate = 'Today';
+  if (date) {
+    const dateObj = new Date(date);
+    if (dateObj instanceof Date && !isNaN(dateObj)) {
+      matchDate = dateObj.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    }
+  }
   
   let title = `${sportName} Betting Tips & Predictions - ${matchDate}`;
   let description = `Get the best ${sportLower} betting tips and predictions for ${matchDate}. Expert analysis and free daily tips.`;
@@ -141,16 +148,21 @@ export default async function Layout({ children, params }) {
     itemListElement: breadcrumbs
   };
 
+  // Validate date for schema
+  const dateObj = date ? new Date(date) : new Date();
+  const isValidDate = dateObj instanceof Date && !isNaN(dateObj);
+  const startDate = isValidDate ? dateObj.toISOString() : new Date().toISOString();
+
   const sportsEventSchema = {
     "@context": "https://schema.org",
     "@type": "SportsEvent",
     name: `${sportName} Betting Predictions${filter1 ? ` - ${filter1}` : ''}${filter2 ? ` ${filter2}` : ''}`,
-    description: `Daily ${sportLower} betting tips and predictions for ${date}${filter1 ? ` featuring ${filter1}` : ''}${filter2 ? ` in ${filter2}` : ''}`,
+    description: `Daily ${sportLower} betting tips and predictions for ${date || 'today'}${filter1 ? ` featuring ${filter1}` : ''}${filter2 ? ` in ${filter2}` : ''}`,
     sport: sportName,
-    startDate: new Date(date).toISOString(),
+    startDate,
     location: {
       "@type": "VirtualLocation",
-      url: `https://sportypredict.com/${sportLower}/${date}${filter1 ? `/${encodeURIComponent(filter1)}` : ''}${filter2 ? `/${encodeURIComponent(filter2)}` : ''}`
+      url: `https://sportypredict.com/${sportLower}/${date || new Date().toISOString().split('T')[0]}${filter1 ? `/${encodeURIComponent(filter1)}` : ''}${filter2 ? `/${encodeURIComponent(filter2)}` : ''}`
     }
   };
 

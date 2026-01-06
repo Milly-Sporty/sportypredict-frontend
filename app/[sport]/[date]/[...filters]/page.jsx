@@ -78,7 +78,7 @@ export default function Sport() {
     };
 
     loadPredictions();
-  }, [params.date, currentSport, fetchPredictions]);
+  }, [date, currentSport, fetchPredictions]);
 
   useEffect(() => {
     if (error) {
@@ -184,7 +184,7 @@ const filteredPredictions = predictions.filter((prediction) => {
   const handleCardClick = (teamA, teamB, id) => {
     if (id === "empty" || !teamA || !teamB) return;
 
-    let selectedDate = params.date; 
+    let selectedDate = date;
     if (!selectedDate) {
       const today = new Date();
       selectedDate = today.toISOString().split("T")[0];
@@ -227,10 +227,8 @@ const filteredPredictions = predictions.filter((prediction) => {
             Text={
               searchKey || hasActiveFilters
                 ? `No ${currentSport} predictions match your filters${
-                    params.date 
-                      ? ` for ${new Date(
-                          params.date
-                        ).toLocaleDateString()}`
+                    date
+                      ? ` for ${new Date(date).toLocaleDateString()}`
                       : ""
                   }`
                 : `No ${currentSport} predictions yet! Check back later.`

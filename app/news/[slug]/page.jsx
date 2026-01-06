@@ -14,7 +14,8 @@ import { FaXTwitter } from "react-icons/fa6";
 import RelatedNews from "@/app/components/RelatedNews";
 
 export default function NewsArticlePage({ params }) {
-  const { slug } = params;
+  const slug = params.slug;
+
   const { articles, fetchArticles } = useNewsStore();
 
   const [article, setArticle] = useState(null);
@@ -97,12 +98,10 @@ export default function NewsArticlePage({ params }) {
     const loadNewsArticle = async () => {
       setLoading(true);
       try {
-        // Ensure articles are loaded
         if (articles.length === 0) {
           await fetchArticles();
         }
 
-        // Find the article by slug
         const foundArticle = findArticleBySlug(slug);
 
         if (foundArticle) {
@@ -111,7 +110,6 @@ export default function NewsArticlePage({ params }) {
           setNotFoundError(true);
         }
       } catch (error) {
-        console.error("Failed to load news article:", error);
         toast.error("Failed to load news article");
         setNotFoundError(true);
       } finally {

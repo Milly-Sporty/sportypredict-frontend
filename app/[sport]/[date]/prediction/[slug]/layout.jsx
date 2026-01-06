@@ -6,12 +6,19 @@ export async function generateMetadata({ params }, parent) {
   const teamNames = slug?.split('-vs-') || [];
   const teamA = teamNames[0]?.replace(/[-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || 'Team A';
   const teamB = teamNames[1]?.replace(/[-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || 'Team B';
-  
-  const matchDate = date ? new Date(date).toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'long', 
-    year: 'numeric'
-  }) : 'Today';
+
+  // Validate and format date
+  let matchDate = 'Today';
+  if (date) {
+    const dateObj = new Date(date);
+    if (dateObj instanceof Date && !isNaN(dateObj)) {
+      matchDate = dateObj.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    }
+  }
   
   const sportConfig = {
     football: {
@@ -69,7 +76,13 @@ export async function generateMetadata({ params }, parent) {
         alt: `${teamA} vs ${teamB} - SportyPredict ${currentSport.charAt(0).toUpperCase() + currentSport.slice(1)}`,
       }],
       article: {
-        publishedTime: date ? new Date(date).toISOString() : new Date().toISOString(),
+        publishedTime: (() => {
+          if (!date) return new Date().toISOString();
+          const dateObj = new Date(date);
+          return (dateObj instanceof Date && !isNaN(dateObj))
+            ? dateObj.toISOString()
+            : new Date().toISOString();
+        })(),
         section: currentSport.charAt(0).toUpperCase() + currentSport.slice(1),
         tags: config.keywords
       }
@@ -103,8 +116,10 @@ export default async function MatchLayout({ children, params }) {
   const teamA = teamNames[0]?.replace(/[-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || 'Team A';
   const teamB = teamNames[1]?.replace(/[-]/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) || 'Team B';
   
+  // Validate date for schema
   const startDate = date ? new Date(date) : new Date();
-  const startDateISO = startDate.toISOString();
+  const isValidStartDate = startDate instanceof Date && !isNaN(startDate);
+  const startDateISO = isValidStartDate ? startDate.toISOString() : new Date().toISOString();
   
   const getVenueName = (sport) => {
     switch(sport) {

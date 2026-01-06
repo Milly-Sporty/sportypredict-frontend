@@ -14,7 +14,8 @@ import { FaXTwitter } from "react-icons/fa6";
 import RelatedBlogPosts from "@/app/components/RelatedBlogPosts";
 
 export default function BlogPostPage({ params }) {
-  const { slug } = params;
+  const slug = params.slug;
+
   const { blogs, featuredBlogs, fetchBlogs, fetchFeaturedBlogs, fetchSingleBlog } = useBlogStore();
 
   const [post, setPost] = useState(null);
@@ -101,7 +102,7 @@ export default function BlogPostPage({ params }) {
             const detailedPost = await fetchSingleBlog(foundBlog._id);
             foundBlog = detailedPost || foundBlog;
           } catch (fetchError) {
-            console.error("Failed to fetch detailed blog:", fetchError);
+            // Silent fail, use foundBlog
           }
         }
 
@@ -111,7 +112,6 @@ export default function BlogPostPage({ params }) {
           setNotFoundError(true);
         }
       } catch (error) {
-        console.error("Failed to load blog post:", error);
         toast.error("Failed to load blog post");
         setNotFoundError(true);
       } finally {

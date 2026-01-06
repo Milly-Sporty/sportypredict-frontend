@@ -1,14 +1,21 @@
 export async function generateMetadata({ params }) {
   const { date, sport } = await params;
-  
+
   // Capitalize sport name for display
   const sportName = sport ? sport.charAt(0).toUpperCase() + sport.slice(1) : 'Sport';
-  
-  const matchDate = date ? new Date(date).toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'long', 
-    year: 'numeric'
-  }) : 'Today';
+
+  // Validate and format date
+  let matchDate = 'Today';
+  if (date) {
+    const dateObj = new Date(date);
+    if (dateObj instanceof Date && !isNaN(dateObj)) {
+      matchDate = dateObj.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    }
+  }
   
   // Sport-specific metadata configurations
   const sportConfigs = {
@@ -93,18 +100,24 @@ const generateWebsiteSchema = (sport, date) => ({
   }
 });
 
-const generateSportsEventSchema = (sport, date) => ({
-  "@context": "https://schema.org",
-  "@type": "SportsEvent",
-  name: `${sport.charAt(0).toUpperCase() + sport.slice(1)} Betting Predictions`,
-  description: `Daily ${sport} betting tips and predictions for ${date}`,
-  sport: sport.charAt(0).toUpperCase() + sport.slice(1),
-  startDate: new Date(date).toISOString(),
-  location: {
-    "@type": "VirtualLocation",
-    url: `https://sportypredict.com/${sport}/${date}`
-  }
-});
+const generateSportsEventSchema = (sport, date) => {
+  // Validate date before creating Date object
+  const dateObj = date ? new Date(date) : new Date();
+  const isValidDate = dateObj instanceof Date && !isNaN(dateObj);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "SportsEvent",
+    name: `${sport.charAt(0).toUpperCase() + sport.slice(1)} Betting Predictions`,
+    description: `Daily ${sport} betting tips and predictions for ${date || 'today'}`,
+    sport: sport.charAt(0).toUpperCase() + sport.slice(1),
+    startDate: isValidDate ? dateObj.toISOString() : new Date().toISOString(),
+    location: {
+      "@type": "VirtualLocation",
+      url: `https://sportypredict.com/${sport}/${date || new Date().toISOString().split('T')[0]}`
+    }
+  };
+};
 
 const generateBreadcrumbSchema = (sport, date) => {
   const sportDisplayName = sport === 'bet-of-the-day' 

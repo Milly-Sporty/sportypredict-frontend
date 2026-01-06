@@ -16,6 +16,10 @@ export default function MobileFilter() {
   const router = useRouter();
   const pathname = usePathname();
   const params = useParams();
+
+  // Extract params to avoid Next.js 15 warning
+  const paramDate = params.date;
+
   const { predictions } = usePredictionStore();
 
   const dateInputRef = useRef(null);
@@ -163,7 +167,7 @@ export default function MobileFilter() {
   };
 
   const getDateDisplayText = () => {
-    const routeDate = params.date;
+    const routeDate = paramDate;
     if (routeDate) {
       return formatDateForDisplay(routeDate);
     }
@@ -316,12 +320,12 @@ export default function MobileFilter() {
     setSelectedPrediction(null);
     
     // Set date from route params
-    if (params.date) {
-      setSelectedDate(params.date);
+    if (paramDate) {
+      setSelectedDate(paramDate);
     } else {
       setSelectedDate(currentDateForInput);
     }
-  }, [pathname, params.date, filterOptions.leagues, filterOptions.countries]);
+  }, [pathname, paramDate, filterOptions.leagues, filterOptions.countries]);
 
   return (
     <div className={styles.mobileFilterContainer}>
@@ -397,7 +401,7 @@ export default function MobileFilter() {
               onChange={handleDateChange}
               onClick={handleDateInputClick}
               onFocus={handleDateInputFocus}
-              value={params.date || currentDateForInput}
+              value={paramDate || currentDateForInput}
               title="Filter by date"
             />
           </div>

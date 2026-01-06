@@ -16,7 +16,6 @@ export default function RelatedPredictions({ currentPrediction }) {
       return [];
     }
 
-    // Filter out the current prediction
     const otherPredictions = predictions.filter(
       (pred) => pred._id !== currentPrediction._id
     );
@@ -25,11 +24,9 @@ export default function RelatedPredictions({ currentPrediction }) {
       return [];
     }
 
-    // Priority-based scoring
     const scorePrediction = (pred) => {
       let score = 0;
 
-      // Priority 1: Same league (highest priority)
       if (
         pred.league &&
         currentPrediction.league &&
@@ -38,7 +35,6 @@ export default function RelatedPredictions({ currentPrediction }) {
         score += 100;
       }
 
-      // Priority 2: Same sport, different league
       if (
         pred.category &&
         currentPrediction.category &&
@@ -47,12 +43,10 @@ export default function RelatedPredictions({ currentPrediction }) {
         score += 50;
       }
 
-      // Priority 3: Same date
       if (pred.date && currentPrediction.date && pred.date === currentPrediction.date) {
         score += 25;
       }
 
-      // Slight preference for matches with similar status (upcoming/live)
       if (pred.status === currentPrediction.status) {
         score += 5;
       }
@@ -60,7 +54,6 @@ export default function RelatedPredictions({ currentPrediction }) {
       return score;
     };
 
-    // Sort by priority score and take top 4
     const sorted = otherPredictions
       .map((pred) => ({ ...pred, priorityScore: scorePrediction(pred) }))
       .sort((a, b) => b.priorityScore - a.priorityScore)
@@ -83,6 +76,8 @@ export default function RelatedPredictions({ currentPrediction }) {
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
+    // Validate the date
+    if (isNaN(date.getTime())) return "";
     return date.toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
@@ -104,7 +99,8 @@ export default function RelatedPredictions({ currentPrediction }) {
       <div className={styles.relatedGrid}>
         {relatedPredictions.map((prediction) => {
           const matchSlug = createMatchSlug(prediction.teamA, prediction.teamB);
-          const predictionUrl = `/${prediction.category}/${prediction.date}/prediction/${matchSlug}`;
+          const matchDate = prediction.date || new Date().toISOString().split('T')[0];
+          const predictionUrl = `/${prediction.category}/${matchDate}/prediction/${matchSlug}`;
           const anchorText = `${prediction.teamA} vs ${prediction.teamB} - ${prediction.league} Prediction`;
           const formattedTime = formatTime(prediction.time);
 
@@ -115,7 +111,6 @@ export default function RelatedPredictions({ currentPrediction }) {
               title={anchorText}
               className={styles.relatedCard}
             >
-              {/* Card Top - League Info */}
               <div className={styles.cardTop}>
                 <div className={styles.leagueInfo}>
                   {prediction.leagueImage && (
@@ -132,9 +127,7 @@ export default function RelatedPredictions({ currentPrediction }) {
                 </div>
               </div>
 
-              {/* Card Middle - Teams */}
               <div className={styles.cardMiddle}>
-                {/* Team A */}
                 <div className={styles.teamContainer}>
                   <div className={styles.teamInner}>
                     {prediction.teamAImage && (
@@ -156,7 +149,6 @@ export default function RelatedPredictions({ currentPrediction }) {
                   </div>
                 </div>
 
-                {/* VS & Time */}
                 <div className={styles.matchInfo}>
                   {formattedTime && (
                     <h3>[{formattedTime.split(" ")[1] || formattedTime}]</h3>
@@ -164,7 +156,6 @@ export default function RelatedPredictions({ currentPrediction }) {
                   <h1>VS</h1>
                 </div>
 
-                {/* Team B */}
                 <div className={styles.teamContainer}>
                   <div className={styles.teamInner}>
                     {prediction.teamBImage && (
@@ -187,10 +178,9 @@ export default function RelatedPredictions({ currentPrediction }) {
                 </div>
               </div>
 
-              {/* Card Footer - Date Info */}
               <div className={styles.cardFooter}>
                 <span className={styles.matchDate}>
-                  {formatDate(prediction.date)}
+                  {formatDate(matchDate)}
                 </span>
               </div>
             </Link>

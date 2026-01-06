@@ -1,6 +1,5 @@
 const API_URL = process.env.NEXT_PUBLIC_SERVER_API;
 
-// Helper function to create slug from title
 function createSlug(title) {
   if (!title) return "";
   return title
@@ -11,40 +10,39 @@ function createSlug(title) {
     .replace(/^-+|-+$/g, "");
 }
 
-// Fetch blog data for metadata generation
 async function getBlogData(slug) {
   try {
-    // Fetch all blogs to find the one matching the slug
-    const response = await fetch(`${API_URL}/api/blog/all`, {
+    if (!API_URL) return null;
+
+    const response = await fetch(`${API_URL}/blog`, {
       cache: 'no-store',
       next: { revalidate: 0 }
     });
 
-    if (!response.ok) {
-      return null;
-    }
+    if (!response.ok) return null;
 
     const data = await response.json();
     const blogs = data.blogs || [];
-
-    // Find blog by matching slug
     const blog = blogs.find(b => createSlug(b.title) === slug);
 
     return blog || null;
   } catch (error) {
-    console.error("Failed to fetch blog data for metadata:", error);
     return null;
   }
 }
 
 export async function generateMetadata({ params }) {
-  const { slug } = params;
+  const { slug } = await params;
   const blog = await getBlogData(slug);
+
+  const fallbackTitle = slug
+    ? slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+    : 'Blog Post';
 
   if (!blog) {
     return {
-      title: "Blog Post Not Found | SportyPredict",
-      description: "The requested blog post could not be found.",
+      title: `${fallbackTitle} | SportyPredict Blog`,
+      description: "Expert sports betting tips, analysis and insights from SportyPredict.",
     };
   }
 
@@ -103,10 +101,9 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function BlogPostLayout({ children, params }) {
-  const { slug } = params;
+  const { slug } = await params;
   const blog = await getBlogData(slug);
 
-  // Generate BlogPosting schema
   const blogPostingSchema = blog ? {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -135,7 +132,6 @@ export default async function BlogPostLayout({ children, params }) {
     keywords: blog.tags ? blog.tags.join(", ") : "",
   } : null;
 
-  // Generate BreadcrumbList schema
   const breadcrumbSchema = blog ? {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",

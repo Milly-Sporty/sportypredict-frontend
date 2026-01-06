@@ -1,6 +1,5 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://backend.sportypredict.com";
+const API_URL = process.env.NEXT_PUBLIC_SERVER_API;
 
-// Helper function to create slug from title
 function createSlug(title) {
   if (!title) return "";
   return title
@@ -11,40 +10,39 @@ function createSlug(title) {
     .replace(/^-+|-+$/g, "");
 }
 
-// Fetch news article data for metadata generation
 async function getNewsData(slug) {
   try {
-    // Fetch all news articles to find the one matching the slug
+    if (!API_URL) return null;
+
     const response = await fetch(`${API_URL}/api/news`, {
       cache: 'no-store',
       next: { revalidate: 0 }
     });
 
-    if (!response.ok) {
-      return null;
-    }
+    if (!response.ok) return null;
 
     const data = await response.json();
     const articles = data.news || data.articles || [];
-
-    // Find article by matching slug
     const article = articles.find(a => createSlug(a.title) === slug);
 
     return article || null;
   } catch (error) {
-    console.error("Failed to fetch news data for metadata:", error);
     return null;
   }
 }
 
 export async function generateMetadata({ params }) {
-  const { slug } = params;
+  const { slug } = await params;
   const article = await getNewsData(slug);
+
+  const fallbackTitle = slug
+    ? slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+    : 'News Article';
 
   if (!article) {
     return {
-      title: "News Article Not Found | SportyPredict",
-      description: "The requested news article could not be found.",
+      title: `${fallbackTitle} | SportyPredict News`,
+      description: "Latest sports news, updates and breaking stories from SportyPredict.",
     };
   }
 
@@ -103,10 +101,9 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function NewsArticleLayout({ children, params }) {
-  const { slug } = params;
+  const { slug } = await params;
   const article = await getNewsData(slug);
 
-  // Generate NewsArticle schema
   const newsArticleSchema = article ? {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
@@ -135,7 +132,6 @@ export default async function NewsArticleLayout({ children, params }) {
     keywords: article.tags ? article.tags.join(", ") : "",
   } : null;
 
-  // Generate BreadcrumbList schema
   const breadcrumbSchema = article ? {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
