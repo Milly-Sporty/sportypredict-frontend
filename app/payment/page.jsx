@@ -51,13 +51,6 @@ const getManualPaymentDetails = (countryCode) => {
       phone: "0594577146",
       description: "Send payment via Mobile Money to David Agyevi",
     },
-    cm: {
-      currency: "XAF",
-      method: "MTN Mobile Money",
-      name: "Promise Amadi",
-      phone: "(+237) 678 832 736",
-      description: "Send payment via MTN Mobile Money to Promise Amadi",
-    },
     ug: {
       currency: "UGX",
       method: "MTN Uganda to Mpesa Kenya",
@@ -393,7 +386,6 @@ export default function Payment() {
     () => [
       { currency: "KE", label: "Kenya" },
       { currency: "NG", label: "Nigeria" },
-      { currency: "CM", label: "Cameroon" },
       { currency: "GH", label: "Ghana" },
       { currency: "ZA", label: "South Africa" },
       { currency: "TZ", label: "Tanzania" },
@@ -471,7 +463,6 @@ export default function Payment() {
     const mappings = {
       kenya: "kenya",
       nigeria: "nigeria",
-      cameroon: "cameroon",
       ghana: "ghana",
       "south africa": "southA",
       tanzania: "tanzania",
@@ -505,7 +496,6 @@ export default function Payment() {
         "kenya",
         "others",
         "nigeria",
-        "cameroon",
         "ghana",
         "southA",
         "tanzania",
@@ -529,7 +519,6 @@ export default function Payment() {
         "kenya",
         "others",
         "nigeria",
-        "cameroon",
         "ghana",
         "southA",
         "tanzania",
@@ -554,7 +543,6 @@ export default function Payment() {
         "others",
         "kenya",
         "nigeria",
-        "cameroon",
         "ghana",
         "southA",
         "tanzania",
