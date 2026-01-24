@@ -10,7 +10,7 @@ const roboto_Condensed = Roboto_Condensed({
   display: "swap",
 });
 
-const SITE_URL = "https://sportypredict.com";
+const SITE_URL = "https://wsportypredict.com";
 const BANNER_URL =
   "https://raw.githubusercontent.com/Milly-Sporty/sportypredict-frontend/refs/heads/main/public/assets/banner.png";
 
@@ -221,7 +221,7 @@ export default function RootLayout({ children }) {
         <Script
           id="ga-tag"
           strategy="afterInteractive"
-          src="https://www.googletagmanager.com/gtag/js?id=G-SY8V8H1BQ9"
+          src="https://www.googletagmanager.com/gtag/js?id=G-TY78VVZYRD"
         />
         <Script
           id="google-analytics"
