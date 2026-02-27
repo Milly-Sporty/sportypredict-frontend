@@ -252,6 +252,57 @@ const SkrillPaymentPopupContent = ({ price, currency, onClose }) => {
   );
 };
 
+const PaypalPaymentPopupContent = ({ price, currency, onClose }) => {
+  const formatPrice = () => {
+    const numericPrice = parseFloat(price);
+    if (isNaN(numericPrice)) return price;
+
+    const displayCurrency = currency || "USD";
+    return `${displayCurrency} ${numericPrice.toLocaleString()}`;
+  };
+
+  return (
+    <div className={styles.manualPaymentPopupContainer}>
+      <div className={styles.manualPaymentPopupHeader}>
+        <h2>PayPal Payment Instructions</h2>
+        <CloseIcon onClick={onClose} />
+      </div>
+
+      <div className={styles.manualPaymentPopupContent}>
+        <div className={styles.manualPaymentAmount}>
+          <h4>Payment Amount</h4>
+          <p>{formatPrice()}</p>
+        </div>
+
+        <div className={styles.manualPaymentMethodDetails}>
+          <p>
+            <strong>Email:</strong> penguincipher@gmail.com
+          </p>
+          <p>
+            <strong>Amount:</strong> {formatPrice()}
+          </p>
+          <p style={{ margin: "8px 0", color: "#666" }}>
+            Send payment via PayPal to penguincipher@gmail.com
+          </p>
+          <p>
+            <li>After payment send screenshot or receipt to: </li>
+            <li>Whatsapp : +254703147237 </li>
+            <li>Email : contact@sportypredict.com </li>
+            <li>- Keep your payment receipt/confirmation</li>
+            <li>- Make sure to send the exact amount shown above</li>
+            <li>
+              - Your VIP access will be activated after payment verification
+            </li>
+            <li>
+              - Contact us at contact@sportypredict.com if you need assistance
+            </li>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ManualPaymentPopupContent = ({
   countryCode,
   price,
@@ -366,6 +417,8 @@ export default function Payment() {
   const [isManualPaymentPopupOpen, setIsManualPaymentPopupOpen] =
     useState(false);
   const [isSkrillPaymentPopupOpen, setIsSkrillPaymentPopupOpen] =
+    useState(false);
+  const [isPaypalPaymentPopupOpen, setIsPaypalPaymentPopupOpen] =
     useState(false);
 
   const [selectedPlan, setSelectedPlan] = useState(null);
@@ -513,7 +566,6 @@ export default function Payment() {
       unavailable: false,
     });
 
-    // Add crypto for all countries
     if (
       [
         "kenya",
@@ -537,7 +589,6 @@ export default function Payment() {
       });
     }
 
-    // Add PayPal (unavailable for now)
     if (
       [
         "others",
@@ -557,7 +608,7 @@ export default function Payment() {
         title: "PayPal",
         image: PaypalImage,
         alt: "PayPal",
-        unavailable: true,
+        unavailable: false,
       });
     }
 
@@ -581,7 +632,7 @@ export default function Payment() {
     } else if (methodId === "crypto") {
       handleCryptoPayment();
     } else if (methodId === "paypal") {
-      toast.info("PayPal is not available for now!");
+      setIsPaypalPaymentPopupOpen(true);
     }
   };
 
@@ -591,6 +642,10 @@ export default function Payment() {
 
   const closeSkrillPaymentPopup = () => {
     setIsSkrillPaymentPopupOpen(false);
+  };
+
+  const closePaypalPaymentPopup = () => {
+    setIsPaypalPaymentPopupOpen(false);
   };
 
   const handlePlanSelect = (plan, type, duration) => {
@@ -603,7 +658,6 @@ export default function Payment() {
     });
     setSelectedPaymentMethod(null);
   };
-
 
   const handleCryptoPayment = () => {
     if (!selectedPlan) {
@@ -646,7 +700,6 @@ export default function Payment() {
 
     if (isAuth && email) {
       try {
-        // Dynamically import PaystackPop only when needed
         const PaystackModule = await import("@paystack/inline-js");
         const PaystackPop = PaystackModule.default;
 
@@ -898,7 +951,6 @@ export default function Payment() {
                         />
                       )}
 
-                      {/* Then show other available methods */}
                       {availableMethods.map((method) => (
                         <PaymentMethodCard
                           key={method.id}
@@ -1002,6 +1054,20 @@ export default function Payment() {
               price={selectedPlan.price}
               currency={selectedPlan.currency}
               onClose={closeSkrillPaymentPopup}
+            />
+          }
+        />
+      )}
+
+      {isPaypalPaymentPopupOpen && selectedPlan && (
+        <Popup
+          OnClose={closePaypalPaymentPopup}
+          IsOpen={isPaypalPaymentPopupOpen}
+          Content={
+            <PaypalPaymentPopupContent
+              price={selectedPlan.price}
+              currency={selectedPlan.currency}
+              onClose={closePaypalPaymentPopup}
             />
           }
         />
