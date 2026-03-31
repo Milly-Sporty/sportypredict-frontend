@@ -20,16 +20,18 @@ export async function GET() {
     const data = await response.json();
     
     if (data.success && Array.isArray(data.blogs)) {
-      const blogsWithSlugs = data.blogs.map(blog => ({
-        ...blog,
-        slug: blog.slug || blog.title
-          ?.toLowerCase()
-          ?.replace(/[^a-z0-9 -]/g, '')
-          ?.replace(/\s+/g, '-')
-          ?.replace(/-+/g, '-')
-          ?.replace(/^-+|-+$/g, '') || 'untitled-blog'
-      }));
-      
+      const blogsWithSlugs = data.blogs
+        .filter(blog => blog.isIndexed !== false)
+        .map(blog => ({
+          ...blog,
+          slug: blog.slug || blog.title
+            ?.toLowerCase()
+            ?.replace(/[^a-z0-9 -]/g, '')
+            ?.replace(/\s+/g, '-')
+            ?.replace(/-+/g, '-')
+            ?.replace(/^-+|-+$/g, '') || 'untitled-blog'
+        }));
+
       return Response.json({
         blogs: blogsWithSlugs,
         total: blogsWithSlugs.length,

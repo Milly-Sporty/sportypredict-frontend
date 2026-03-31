@@ -214,9 +214,46 @@ export default function BlogPostPage({ params }) {
           <div
             className={styles.sideSlideInnerContent}
             dangerouslySetInnerHTML={{
-              __html: DOMPurify.sanitize(post.content),
+              __html: DOMPurify.sanitize(post.content, {
+                ADD_ATTR: ["target", "rel"],
+              }),
             }}
           />
+          {post.doFollowLinks && (
+            (() => {
+              const { clientLink, internalLink, authorityLinks } = post.doFollowLinks;
+              const hasLinks = clientLink || internalLink || (Array.isArray(authorityLinks) && authorityLinks.length > 0);
+              if (!hasLinks) return null;
+              return (
+                <div className={styles.sideSlideInnerContent}>
+                  <h3>References</h3>
+                  <ul>
+                    {clientLink && (
+                      <li>
+                        <a href={clientLink} target="_blank" rel="noopener">
+                          {clientLink}
+                        </a>
+                      </li>
+                    )}
+                    {internalLink && (
+                      <li>
+                        <a href={internalLink} target="_blank" rel="noopener">
+                          {internalLink}
+                        </a>
+                      </li>
+                    )}
+                    {Array.isArray(authorityLinks) && authorityLinks.map((link, i) => (
+                      <li key={i}>
+                        <a href={link} target="_blank" rel="noopener">
+                          {link}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })()
+          )}
         </div>
       </div>
 

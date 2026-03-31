@@ -89,14 +89,22 @@ export async function generateMetadata({ params }) {
       images: [blog.image],
       creator: "@SportyPredict",
     },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-      },
-    },
+    robots: blog.isIndexed !== false
+      ? {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+          },
+        }
+      : {
+          index: false,
+          follow: false,
+          googleBot: { index: false, follow: false },
+        },
   };
 }
 
@@ -107,11 +115,18 @@ export default async function BlogPostLayout({ children, params }) {
   const blogPostingSchema = blog ? {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
+    "@id": `https://sportypredict.com/blog/${slug}`,
+    url: `https://sportypredict.com/blog/${slug}`,
     headline: blog.title,
-    description: blog.excerpt || blog.description,
-    image: blog.image,
+    description: blog.excerpt || blog.description || `Read ${blog.title} on SportyPredict`,
+    image: {
+      "@type": "ImageObject",
+      url: blog.image,
+      width: 1200,
+      height: 630,
+    },
     author: {
-      "@type": "Organization",
+      "@type": blog.author ? "Person" : "Organization",
       name: blog.author || "SportyPredict",
     },
     publisher: {
@@ -130,6 +145,8 @@ export default async function BlogPostLayout({ children, params }) {
     },
     articleSection: blog.category,
     keywords: blog.tags ? blog.tags.join(", ") : "",
+    isAccessibleForFree: true,
+    ...(blog.readTime && { timeRequired: `PT${blog.readTime.replace(/\D/g, '')}M` }),
   } : null;
 
   const breadcrumbSchema = blog ? {

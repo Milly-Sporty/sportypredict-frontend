@@ -239,6 +239,7 @@ async function getBlogUrls() {
       return [];
     }
     
+    const now = new Date();
     const blogUrls = blogs.map(blog => {
       const slug = blog.slug || blog.title
         .toLowerCase()
@@ -247,11 +248,24 @@ async function getBlogUrls() {
         .replace(/-+/g, '-')
         .replace(/^-+|-+$/g, '');
 
+      const isOnHomepage = blog.homepageExpiresAt && new Date(blog.homepageExpiresAt) > now;
+
+      let priority = 0.6;
+      let changeFrequency = 'monthly';
+
+      if (blog.permanentPlacement) {
+        priority = 0.9;
+        changeFrequency = 'never';
+      } else if (blog.featured || isOnHomepage) {
+        priority = 0.8;
+        changeFrequency = 'weekly';
+      }
+
       return {
         url: `https://sportypredict.com/blog/${slug}`,
         lastModified: getLocalDate(blog.updatedAt || blog.publishedAt || blog.createdAt),
-        changeFrequency: blog.featured ? 'weekly' : 'monthly',
-        priority: blog.featured ? 0.8 : 0.6,
+        changeFrequency,
+        priority,
       };
     });
     
